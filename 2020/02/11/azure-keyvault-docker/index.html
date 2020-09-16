@@ -1,0 +1,303 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>Azure KeyVault + Docker - Manuss20</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.75.1"><meta itemprop=name content="Azure KeyVault + Docker"><meta itemprop=description content="Las plantillas de Azure ARM (Azure Resource Manager) permite aprovisionar las aplicaciones usando una plantilla declarativa. En una sola plantilla, se pueden implementar varios servicios junto con sus dependencias. Se usa la misma plantilla para implementar repetidamente la aplicación durante cada etapa de su ciclo de vida."><meta itemprop=datePublished content="2020-02-11T00:00:00+00:00"><meta itemprop=dateModified content="2020-02-11T00:00:00+00:00"><meta itemprop=wordCount content="1855"><meta itemprop=image content="manuss20.github.io/img/posts/Azure_keyVault_docker.jpg"><meta itemprop=keywords content="Azure,ARM,Azure ARM,CD,CI,Deploy,Group Resources,Templates,Automation,Cloud,"><meta property="og:title" content="Azure KeyVault + Docker"><meta property="og:description" content="Las plantillas de Azure ARM (Azure Resource Manager) permite aprovisionar las aplicaciones usando una plantilla declarativa. En una sola plantilla, se pueden implementar varios servicios junto con sus dependencias. Se usa la misma plantilla para implementar repetidamente la aplicación durante cada etapa de su ciclo de vida."><meta property="og:type" content="article"><meta property="og:url" content="manuss20.github.io/2020/02/11/azure-keyvault-docker/"><meta property="og:image" content="manuss20.github.io/img/posts/Azure_keyVault_docker.jpg"><meta property="article:published_time" content="2020-02-11T00:00:00+00:00"><meta property="article:modified_time" content="2020-02-11T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="manuss20.github.io/img/posts/Azure_keyVault_docker.jpg"><meta name=twitter:title content="Azure KeyVault + Docker"><meta name=twitter:description content="Las plantillas de Azure ARM (Azure Resource Manager) permite aprovisionar las aplicaciones usando una plantilla declarativa. En una sola plantilla, se pueden implementar varios servicios junto con sus dependencias. Se usa la misma plantilla para implementar repetidamente la aplicación durante cada etapa de su ciclo de vida."><meta name=twitter:site content="@manuss20"><link rel=stylesheet href=/manuss20.github.io/css/bundle.min.759e3848ea529eef056dab665b241e2af569e601ab80f68f8d4a4d002a155dd4.css integrity="sha256-dZ44SOpSnu8FbatmWyQeKvVp5gGrgPaPjUpNACoVXdQ="><link rel=stylesheet href=/manuss20.github.io/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/manuss20.github.io/ class=nav>Blog</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/manuss20.github.io/ class="nav link"><i class="fa fa-home"></i>Home</a>
+<a href=/manuss20.github.io/about/ class="nav link"><i class="fas fa-user-astronaut"></i>About</a>
+<a href=/manuss20.github.io/categories/ class="nav link"><i class="fas fa-journal-whills"></i>Categories</a>
+<a href=#search-input class="nav search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
+<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu></header><div id=wrapper><section id=site-intro><a href=/manuss20.github.io/><img src=manuss20.github.io/img/main/profile.jpg class=circle width=100 alt="Manuel Sanchez"></a><header><h1>Manuel Sánchez</h1></header><main><p>Technical Manager at @everis | Microsoft MVP Azure at <a href=#>@Microsoft</a>| Founder and Organizer @netcoreconf & @CAT_zure</p></main><footer><ul class=socnet-icons><li><a href=//github.com/manuss20 target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//medium.com/@manuss20 target=_blank rel=noopener title=Medium class="fab fa-medium"></a></li><li><a href=//linkedin.com/in/manuss20 target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//instagram.com/manuss20 target=_blank rel=noopener title=Instagram class="fab fa-instagram"></a></li><li><a href=//twitter.com/manuss20 target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=manuss20.github.io/2020/02/11/azure-keyvault-docker/>Azure KeyVault + Docker</a></h2><p>Las plantillas de Azure ARM (Azure Resource Manager) permite aprovisionar las aplicaciones usando una plantilla declarativa. En una sola plantilla, se pueden implementar varios servicios junto con sus dependencias. Se usa la misma plantilla para implementar repetidamente la aplicación durante cada etapa de su ciclo de vida.</p></div><div class=meta><time class=published datetime="2020-02-11 00:00:00 +0000 UTC">February 11, 2020</time>
+<span class=author>Manuel Sanchez</span><p>9 minute read</p></div></header><section id=socnet-share><a href="//twitter.com/share?text=Azure%20KeyVault%20%2b%20Docker&url=manuss20.github.io%2f2020%2f02%2f11%2fazure-keyvault-docker%2f" target=_blank rel=noopener class="nav share-btn twitter"><i class="fab fa-twitter"></i><p>&nbsp;Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=manuss20.github.io%2f2020%2f02%2f11%2fazure-keyvault-docker%2f" target=_blank rel=noopener class="nav share-btn facebook"><i class="fab fa-facebook"></i><p>&nbsp;Facebook</p></a><a href="//www.linkedin.com/shareArticle?url=manuss20.github.io%2f2020%2f02%2f11%2fazure-keyvault-docker%2f&title=Azure%20KeyVault%20%2b%20Docker" target=_blank rel=noopener class="nav share-btn linkedin"><i class="fab fa-linkedin"></i><p>&nbsp;LinkedIn</p></a><a href="//www.reddit.com/submit?url=manuss20.github.io%2f2020%2f02%2f11%2fazure-keyvault-docker%2f&title=Azure%20KeyVault%20%2b%20Docker" target=_blank rel=noopener class="nav share-btn reddit"><i class="fab fa-reddit-alien"></i><p>&nbsp;Reddit</p></a><a href="mailto:?subject=Check%20out%20this%20post%20by Manuel%20Sanchez&body=manuss20.github.io%2f2020%2f02%2f11%2fazure-keyvault-docker%2f" target=_blank class="nav share-btn email" data-proofer-ignore><i class="fas fa-envelope"></i><p>&nbsp;Email</p></a></section><a href=manuss20.github.io/2020/02/11/azure-keyvault-docker/ class="image featured"><img src=manuss20.github.io/img/posts/Azure_keyVault_docker.jpg alt></a><div class=content><p>En este post quiero explicaros como podemos desplegar nuestro entorno de desarrollo de una forma fácil y segura. Para ello vamos a usar docker para poder crear un contenedor con nuestra aplicación “API netcore 3.1” que conecta contra nuestra base de datos Azure SQL de forma segura sin tener que exponer nuestras credenciales.</p><blockquote><p>Docker es una plataforma para desarrolladores y sysadmins (utlizando la filosofía DevOps) que nos permite desarrollar, desplegar y ejecutar aplicaciones en contenedores de una forma fácil y sencilla.</p></blockquote><p>Para ello vamos a empezar creando nuestra API en .NET Core 3.1, pare ello usaremos el siguiente comando:</p><pre><code>dotnet new API -n Azuretraining
+</code></pre><p>Esto nos creara la estructura de nuestro proyecto con el nombre que le hemos asignado «Azuretraining» tal y como podemos observar en la siguiente imagen:</p><p><img src=/img/posts/AKVD_1.png alt="Estructura del proyecto tras el lanzamiento del comando anteriormente mencionado."></p><p>Ahora vamos a agregar el nuget para poder trabajar con SQL en nuestro proyecto:</p><pre><code>dotnet add package Microsoft.EntityFrameworkCore.SqlServer 
+dotnet add package Microsoft.EntityFrameworkCore.InMemory
+</code></pre><p>Incorporaremos una nueva clase al modelo, para este ejemplo definiremos un modelo de ejemplo llamado «Courses» dentro de nuestra carpeta Models:</p><pre><code>namespace Azuretraining.Models
+{
+    public class Course
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int Capacity {get; set;}
+        public double Qualification {get; set;} 
+        public string Modality {get; set;}
+        public string Category {get; set;}
+        public bool IsComplete { get; set; }
+    }
+}
+</code></pre><p>Una vez tenemos nuestro modelo incorporaremos el contexto de base de datos, será la clase principal que coordina la funcionalidad de Entity Framework para un modelo de datos. Para ello agregaremos a nuestra carpeta Models un nuevo fichero llamado «CourseContext.cs» con el siguiente formato:</p><pre><code>using Microsoft.EntityFrameworkCore;
+
+namespace Azuretraining.Models
+{
+    public class CourseContext : DbContext
+    {
+        public CourseContext(DbContextOptions&lt;CourseContext&gt; options)
+            : base(options)
+        {
+        }
+
+        public DbSet&lt;Course&gt; Courses { get; set; }
+    }
+}
+</code></pre><p>Ahora deberemos de modificar nuestro fichero «Startup.cs» agregando las referencias necesarias para usar los servicios:</p><pre><code>using Microsoft.EntityFrameworkCore;
+using Azuretraining.Models;
+Y modificaremos nuestra función «ConfigureServices» para que tenga el siguiente aspecto:
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddDbContext&lt;CourseContext&gt;(opt =&gt;
+        opt.UseInMemoryDatabase(&quot;CourseList&quot;));
+    services.AddControllers();
+}
+</code></pre><p>Esto nos proporcionará poder usar una BD en memoria para realizar unas primeras pruebas antes de atacar a nuestra BD en la nube. Una vez lo tenemos todo preparado vamos a agregar los Nugets necesarios para poder hacer el scaffolding y generar de forma automática nuestro Controller con las siguientes instrucciones:</p><pre><code>dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet tool install --global dotnet-aspnet-codegenerator
+dotnet aspnet-codegenerator controller -name CoursesController -async -api -m Course -dc CourseContext -outDir 
+</code></pre><p>Controllers
+Veremos que en la carpeta Controller nos ha generado el archivo «CoursesController.cs» donde tendremos definida todas las acciones de nuestra API. Ahora ejecutaremos nuestra aplicación y en un explorador introducimos la siguiente URL: https://localhost:5001/api/courses.</p><p><img src=/img/posts/AKVD_2.png alt></p><p>Ahora vamos a modificar nuestra aplicación para que conecte directamente con nuestra BD de Azure SQL. Para ello previamente deberemos haber creado nuestra instancia, podemos usar Azure CLI para poder hacerlo como se muestra en el siguiente ejemplo:</p><pre><code>az sql server create --subscription &quot;NOMBRE DE LA SUSCRIPCIÓN&quot; --name trainginappDB --resource-group TrainingApp --location &quot;West Europe&quot; --admin-user &quot;NOMBRE DE USUARIO&quot; --admin-password &quot;PASSWORD&quot;
+ 
+az sql server firewall-rule create --subscription &quot;NOMBRE DE LA SUSCRIPCIÓN&quot;  --resource-group TrainingApp --server trainginappdb --name AllowAllIps --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+
+az sql db create --subscription &quot;NOMBRE DE LA SUSCRIPCIÓN&quot; --resource-group TrainingApp --server trainginappdb --name TrainingApp --service-objective S0
+</code></pre><p>Una vez tenemos creada nuestra instancia de BD en Azure SQL, vamos a preparar nuestra solución para «dockerizar», para ello generaremos un fichero .Dockerfile con el siguiente contenido:</p><pre><code># https://hub.docker.com/_/microsoft-dotnet-core
+ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+  WORKDIR /app
+
+# copy csproj and restore as distinct layers
+  COPY *.csproj ./
+  RUN dotnet restore
+
+# copy everything else and build app
+  COPY . ./
+  RUN dotnet publish -c release -o out --no-restore
+
+# final stage/image
+  FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+  WORKDIR /app
+  COPY --from=build /app/out .
+  ENTRYPOINT [&quot;dotnet&quot;, &quot;azuretraining.dll&quot;] 
+Y un fichero «.dockerignore» en nuestra solución con el siguiente contenido:
+
+# directories
+**/bin/
+**/obj/
+**/out/
+
+# files
+Dockerfile*
+**/*.md
+</code></pre><p>Para nuestra cadena de conexión usaremos Azure KeyVault para poder proteger nuestro «secretos», para ello iremos al portal de Azure y crearemos un nuevo Azure KeyVault. Una vez creado vamos a Secrets -> Generate/Import como se puede apreciar en la siguiente captura:</p><p><img src=/img/posts/AKVD_3.png alt></p><p>En la siguiente pantalla deberemos de indicar que es una entrada manual, le damos un nombre a nuestro secreto, en este caso «ConnectionStrings–TrainingConnection» esto se debe a que en nuestro fichero «appsettings.json» tenemos la definición de nuestro ConnectionStrings de la siguiente forma y para que el KeyVault pueda insertar el valor en tiempo de ejecución debemos de separarlos con «–» el nombre concatenando la relación padre-hijo:</p><p><img src=/img/posts/AKVD_4.png alt></p><p>Ahora añadimos la cadena de conexión hacia nuestro Azure SQL que nos facilita cuando creamos el servicio, como se puede apreciar en la siguiente captura:</p><p><img src=/img/posts/AKVD_5.png alt></p><p>Una vez que ya tenemos nuestro KeyVault para poder proteger nuestros «secretos» vamos a modificar nuestro proyecto para poder usarlo, para ello necesitaremos añadir los siguiente Nugets:</p><pre><code>dotnet add package Microsoft.Azure.KeyVault
+dotnet add package Microsoft.Azure.Services.AppAuthentication
+dotnet add package Microsoft.Extensions.Configuration.AzureKeyVault
+Modificaremos nuestro archivo «Program.cs» añadiremos los imports necesarios:
+</code></pre><pre><code>using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
+</code></pre><p>Sustituiremos el método IHostBuilder para poder obtener la información de nuestro KeyVault y asignarlo el siguiente formato:</p><pre><code>public static IHostBuilder CreateHostBuilder(string[] args) =&gt;
+    Host.CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration((ctx, builder) =&gt;
+        {
+            var keyVaultEndpoint = GetKeyVaultEndpoint();
+            if (!string.IsNullOrEmpty(keyVaultEndpoint))
+            {
+                var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                var keyVaultClient = new KeyVaultClient(
+                    new KeyVaultClient.AuthenticationCallback(
+                        azureServiceTokenProvider.KeyVaultTokenCallback));
+                builder.AddAzureKeyVault(
+                    keyVaultEndpoint, keyVaultClient, new DefaultKeyVaultSecretManager());
+            }
+        })
+        .ConfigureWebHostDefaults(webBuilder =&gt;
+        {
+            webBuilder.UseStartup&lt;Startup&gt;();
+        });
+static string GetKeyVaultEndpoint() =&gt; Environment.GetEnvironmentVariable(&quot;KEYVAULT_ENDPOINT&quot;);
+</code></pre><p>Ahora agregaremos en el environment (todo esto lo hacemos para que la acción se realice en tiempo de ejecución), para ello nos fijaremos que en la última linea de nuestro «Program.cs» indicábamos obtener de la variable «KEYVAULT_ENDPOINT» en ella declararemos la URL de nuestro Azure KeyVaul, esta información la deberemos de añadirla a nuestro fichero «launch.json» con el siguiente formato:</p><pre><code>{
+   // Use IntelliSense to find out which attributes exist for C# debugging
+   // Use hover for the description of the existing attributes
+   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+   &quot;version&quot;: &quot;0.2.0&quot;,
+   &quot;configurations&quot;: [
+        {
+            &quot;name&quot;: &quot;.NET Core Launch (web)&quot;,
+            &quot;type&quot;: &quot;coreclr&quot;,
+            &quot;request&quot;: &quot;launch&quot;,
+            &quot;preLaunchTask&quot;: &quot;build&quot;,
+            // If you have changed target frameworks, make sure to update the program path.
+            &quot;program&quot;: &quot;${workspaceFolder}/bin/Debug/netcoreapp3.1/trainingapp.courses.dll&quot;,
+            &quot;args&quot;: [],
+            &quot;cwd&quot;: &quot;${workspaceFolder}&quot;,
+            &quot;stopAtEntry&quot;: false,
+            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+            &quot;serverReadyAction&quot;: {
+                &quot;action&quot;: &quot;openExternally&quot;,
+                &quot;pattern&quot;: &quot;^\\s*Now listening on:\\s+(https?://\\S+)&quot;                
+            },
+            &quot;env&quot;: {
+                &quot;ASPNETCORE_ENVIRONMENT&quot;: &quot;Development&quot;,
+                &quot;KEYVAULT_ENDPOINT&quot;: &quot;https://NOMBREDENUESTROKEYVAULT.vault.azure.net/&quot;
+            },
+            &quot;sourceFileMap&quot;: {
+                &quot;/Views&quot;: &quot;${workspaceFolder}/Views&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;.NET Core Attach&quot;,
+            &quot;type&quot;: &quot;coreclr&quot;,
+            &quot;request&quot;: &quot;attach&quot;,
+            &quot;processId&quot;: &quot;${command:pickProcess}&quot;
+        }
+    ]
+}
+</code></pre><p>Por ultimo sustituiremos en nuestro fichero «Startup.cs» la conexión de la BD en memoria por la conexión hacia nuestro Azure SQL con la configuración que hemos preparado en los pasos anteriores, y quedará de la siguiente forma:</p><p><img src=/img/posts/AKVD_6.png alt></p><p>Esta primer servicio es la conexión que realizamos para conectar con nuestra «Cadena de conexión» securizada:</p><pre><code>services.AddDbContext(options =&gt;
+                 options.UseSqlServer(Configuration.GetConnectionString(&quot;TrainingConnection&quot;)));
+</code></pre><p>Este segundo servicio nos permitirá crear las tabla y estructura iniciales en caso de que no lo tengamos:</p><pre><code>services.BuildServiceProvider().GetService().Database.Migrate();
+</code></pre><p>Ahora lanzamos nuestra aplicación y vemos que nos ha funcionado correctamente:</p><p><img src=/img/posts/AKVD_7.png alt></p><p><strong>ATENCIÓN</strong>: Como hemos podido ver hasta aquí lo único que hemos echo es indicar la url de nuestro Azure KeyVault para poder recuperar la información de la cadena de conexión, pero el «truco» es que sino estamos logados en nuestro azure CLI en local no podremos usarlo y nos devolverá el siguiente error:</p><pre><code>Startup.cs(34,13): warning ASP0000: Calling 'BuildServiceProvider' from application code results in an additional copy of singleton services being created. Consider alternatives such as dependency injecting services as parameters to 'Configure'. [/Users/msanchez/Projects/Azuretraining/Azuretraining.csproj]
+Unhandled exception. System.ArgumentNullException: Value cannot be null. (Parameter 'connectionString')
+at Microsoft.EntityFrameworkCore.Utilities.Check.NotEmpty(String value, String parameterName)
+at Microsoft.EntityFrameworkCore.SqlServerDbContextOptionsExtensions.UseSqlServer(DbContextOptionsBuilder optionsBuilder, String connectionString, Action1 sqlServerOptionsAction)    at Azuretraining.Startup.&lt;ConfigureServices&gt;b__4_0(DbContextOptionsBuilder options) in /Users/msanchez/Projects/Azuretraining/Startup.cs:line 32    at Microsoft.Extensions.DependencyInjection.EntityFrameworkServiceCollectionExtensions.&lt;&gt;c__DisplayClass1_02.b__0(IServiceProvider p, DbContextOptionsBuilder b)
+at Microsoft.Extensions.DependencyInjection.EntityFrameworkServiceCollectionExtensions.CreateDbContextOptions[TContext](IServiceProvider applicationServiceProvider, Action2 optionsAction)    at Microsoft.Extensions.DependencyInjection.EntityFrameworkServiceCollectionExtensions.&lt;&gt;c__DisplayClass10_01.b__0(IServiceProvider p)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitFactory(FactoryCallSite factoryCallSite, RuntimeResolverContext context)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)    at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)    at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite singletonCallSite, RuntimeResolverContext context)    at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)    at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)    at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite singletonCallSite, RuntimeResolverContext context)    at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.&lt;&gt;c__DisplayClass1_0.b__0(ServiceProviderEngineScope scope)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
+at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType)
+at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService[T](IServiceProvider provider)
+at Azuretraining.Startup.ConfigureServices(IServiceCollection services) in /Users/msanchez/Projects/Azuretraining/Startup.cs:line 34
+at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor, Boolean wrapExceptions)
+at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.InvokeCore(Object instance, IServiceCollection services)
+at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.&lt;&gt;c__DisplayClass9_0.g__Startup|0(IServiceCollection serviceCollection)
+at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.&lt;&gt;c__DisplayClass8_0.b__0(IServiceCollection services)
+at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.UseStartup(Type startupType, HostBuilderContext context, IServiceCollection services)
+at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.&lt;&gt;c__DisplayClass12_0.b__0(HostBuilderContext context, IServiceCollection services)
+at Microsoft.Extensions.Hosting.HostBuilder.CreateServiceProvider()
+at Microsoft.Extensions.Hosting.HostBuilder.Build()
+at Azuretraining.Program.Main(String[] args) in /Users/msanchez/Projects/Azuretraining/Program.cs:line 19
+
+</code></pre><p>Este error nos dará si intentamos ejecutar nuestro contenedor de docker, para solventarlo deberemos de aplicar un <strong>«work around»</strong> que nos permita poder trabajar sin problemas y a la vez que subimos el código a cualquier repositorio de código no tengamos que mostrar nuestra cadenas de conexión o información sensible. Para ello lo que vamos a hacer es añadir un nuevo fichero llamado docker-compose.yml con la siguiente composición:</p><pre><code>version: &quot;3.7&quot;
+
+networks:
+    azuretraining.services.network:
+        driver: bridge
+
+services:
+    azuretraining.services.courses:
+        container_name: Azuretraining.Services
+        build:
+          context: ../
+          dockerfile: ./Azuretraining.Dockerfile   
+        ports:
+            - &quot;8001:80&quot;
+        networks:
+            - azuretraining.services.network
+        volumes:
+            - ~/.azure:/root/.azure   
+        environment: 
+            - KEYVAULT_ENDPOINT=https://NOMBREDENUESTROKEYVAULT.vault.azure.net/ 
+
+</code></pre><p>En nuestro docker-compose hemos definido la estructura de ejecución de nuestros servicio, en este caso solo tenemos un contenedor, donde le indicamos el network, puerto, nombre del contenedor, etc…</p><p>En este caso lo más importante son las propiedades <strong>volumes</strong> y <strong>environment</strong>. En el <strong>environment</strong> agregaremos nuestra url del Azure KeyVault, y en volumes lo que vamos a hacer es crear un volumen compartido donde copiaremos nuestra carpeta local de Azure para que podamos hacer sin ningún problema login con Azure CLI. Lo más importante es que aunque esta carpeta se suba no compromete nuestra seguridad pues no tiene nada vinculante.</p><p>Ahora modificaremos nuestro fichero .dockerfile para incluirle el Azure CLI y que podamos consumir la conexión hacia nuestro Azure KeyVault desde nuestro contenedor:</p><pre><code># https://hub.docker.com/_/microsoft-dotnet-core
+ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+  WORKDIR /app
+
+# copy csproj and restore as distinct layers
+  COPY *.csproj ./
+  RUN dotnet restore
+
+# copy everything else and build app
+  COPY . ./
+  RUN dotnet publish -c release -o out --no-restore
+
+# final stage/image
+  FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+
+# install azure cli
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update \
+    &amp;&amp; apt-get -y install --no-install-recommends apt-utils dialog 2&gt;&amp;1 \
+    #
+    # Verify git, process tools, lsb-release (common in install instructions for CLIs) installed
+    &amp;&amp; apt-get -y install git openssh-client iproute2 procps apt-transport-https gnupg2 curl lsb-release \
+    &amp;&amp; echo &quot;deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main&quot; &gt; /etc/apt/sources.list.d/azure-cli.list \
+    &amp;&amp; curl -sL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - 2&gt;/dev/null \
+    &amp;&amp; apt-get update \
+    &amp;&amp; apt-get install -y azure-cli; 
+
+
+  WORKDIR /app
+  COPY --from=build /app/out .
+  ENTRYPOINT [&quot;dotnet&quot;, &quot;azuretraining.dll&quot;]
+</code></pre><p>Por último solo nos queda lanzar el siguiente comando para ejecutar nuestras aplicación en local «dockerizada» y «securizada»:</p><pre><code>docker-compose up
+</code></pre><p>De esta forma tendremos nuestro proyecto completamente securizado pudiendo trabajar de forma fácil y sencilla, sin preocuparnos de que subamos información sensible a nuestro repositorio de código.</p><p>Dar las gracias a mi compañero <a href=https://twitter.com/cmendibl3>@cmendibl3</a> por colaborar.</p><p>Saludos!</p></div><footer><ul class=stats><li class=categories><ul><li><a class=article-terms-link href=/manuss20.github.io/categories/azure/>Azure</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/arm/>ARM</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/azure-arm/>Azure ARM</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/cd/>CD</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/ci/>CI</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/deploy/>Deploy</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/group-resources/>Group Resources</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/templates/>Templates</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/automation/>Automation</a></li><li><a class=article-terms-link href=/manuss20.github.io/categories/cloud/>Cloud</a></li></ul></li><li class=tags><ul><li><a class=article-terms-link href=/manuss20.github.io/tags/azure/>Azure</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/arm/>ARM</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/azure-arm/>Azure ARM</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/cd/>CD</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/ci/>CI</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/deploy/>Deploy</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/group-resources/>Group Resources</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/templates/>Templates</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/automation/>Automation</a></li><li><a class=article-terms-link href=/manuss20.github.io/tags/cloud/>Cloud</a></li></ul></li></ul></footer></article><article class=post><div><h2>Say something</h2><form id=post-js-form class=post-new-comment method=post><h5 class="post-reply-notice hidden"><span class=post-reply-arrow></span><span class=post-reply-name></span></h5><input type=hidden name=options[entryId] value=34b88ceae9a628479830dba02e522f80>
+<input type=hidden name=fields[replyThread]>
+<input type=hidden name=fields[replyID]>
+<input type=hidden name=fields[replyName]>
+<input required name=fields[name] type=text placeholder="Your name (Required)">
+<input name=fields[website] type=text placeholder="Your website">
+<input required name=fields[email] type=email placeholder="Your email address (Required for Gravatar)">
+<textarea required name=fields[body] placeholder="Your message. Feel free to use Markdown (Google 'Markdown Cheat Sheet')." rows=10></textarea><p class=post-submit-notice><strong class="post-submit-notice-text submit-success hidden">Thanks for your comment! It will be shown on the site once it has been approved.</strong>
+<strong class="post-submit-notice-text submit-failed hidden">Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again.</strong></p><input type=submit value=Submit class=button>
+<input type=submit value=Submitted class="hidden button" disabled>
+<input type=reset value=Reset class=button></form></div><div><h2>Comments</h2></div></article><div class=pagination><a href=manuss20.github.io/2020/01/20/eventos-netcoreconf-barcelona-2020/ class=button><div class=previous><div>[Eventos] Netcoreconf Barcelona 2020</div></div></a><a href=manuss20.github.io/2020/03/14/dapr/ class=button><div class=next><div>DAPR</div></div></a></div></main><section id=site-sidebar><img src=/img/MVP_Logo.png><section id=recent-posts><header><h1>Recent posts</h1></header><article class=mini-post><header><h2><a href=manuss20.github.io/2020/03/14/dapr/>DAPR</a></h2><time class=published datetime>March 14, 2020</time></header></article><article class=mini-post><header><h2><a href=manuss20.github.io/2020/02/11/azure-keyvault-docker/>Azure KeyVault + Docker</a></h2><time class=published datetime>February 11, 2020</time></header></article><article class=mini-post><header><h2><a href=manuss20.github.io/2020/01/20/eventos-netcoreconf-barcelona-2020/>[Eventos] Netcoreconf Barcelona 2020</a></h2><time class=published datetime>January 20, 2020</time></header></article><article class=mini-post><header><h2><a href=manuss20.github.io/2019/11/22/monitorizaci%C3%B3n-de-aplicaciones-en-azure/>Monitorización de aplicaciones en Azure</a></h2><time class=published datetime>November 22, 2019</time></header></article><article class=mini-post><header><h2><a href=manuss20.github.io/2019/09/26/eventos-netcoreconf-galicia-2019/>[Eventos] Netcoreconf Galicia 2019</a></h2><time class=published datetime>September 26, 2019</time></header></article></section><section id=categories><header><h1><a href=/manuss20.github.io/categories>Categories</a></h1></header><a href=/manuss20.github.io/tags/2019 style=font-size:1rem>2019</a>
+<a href=/manuss20.github.io/tags/aks style=font-size:1rem>aks</a>
+<a href=/manuss20.github.io/tags/architecture style=font-size:1rem>architecture</a>
+<a href=/manuss20.github.io/tags/arm style=font-size:1.581642902557735rem>arm</a>
+<a href=/manuss20.github.io/tags/automation style=font-size:1.948618715735074rem>automation</a>
+<a href=/manuss20.github.io/tags/automatizaci%C3%B3n style=font-size:1rem>automatización</a>
+<a href=/manuss20.github.io/tags/azure style=font-size:2.4679032527093563rem>azure</a>
+<a href=/manuss20.github.io/tags/azure-application-insight style=font-size:1rem>azure-application-insight</a>
+<a href=/manuss20.github.io/tags/azure-arm style=font-size:1.581642902557735rem>azure-arm</a>
+<a href=/manuss20.github.io/tags/azure-devops style=font-size:1rem>azure-devops</a>
+<a href=/manuss20.github.io/tags/azure-event-grid style=font-size:1rem>azure-event-grid</a>
+<a href=/manuss20.github.io/tags/azure-functions style=font-size:1rem>azure-functions</a>
+<a href=/manuss20.github.io/tags/azure-logic-apps style=font-size:1rem>azure-logic-apps</a>
+<a href=/manuss20.github.io/tags/azure-monitor style=font-size:1rem>azure-monitor</a>
+<a href=/manuss20.github.io/tags/azure-web-app style=font-size:1rem>azure-web-app</a>
+<a href=/manuss20.github.io/tags/azure-webapps style=font-size:1rem>azure-webapps</a>
+<a href=/manuss20.github.io/tags/beginners style=font-size:1rem>beginners</a>
+<a href=/manuss20.github.io/tags/cd style=font-size:1.581642902557735rem>cd</a>
+<a href=/manuss20.github.io/tags/ci style=font-size:1.581642902557735rem>ci</a>
+<a href=/manuss20.github.io/tags/cloud style=font-size:2.2695277313808204rem>cloud</a>
+<a href=/manuss20.github.io/tags/community style=font-size:2.100927439532017rem>community</a>
+<a href=/manuss20.github.io/tags/comunidad style=font-size:2.0302313553994944rem>comunidad</a>
+<a href=/manuss20.github.io/tags/containers style=font-size:1rem>containers</a>
+<a href=/manuss20.github.io/tags/dapr style=font-size:1rem>dapr</a>
+<a href=/manuss20.github.io/tags/deploy style=font-size:1.581642902557735rem>deploy</a>
+<a href=/manuss20.github.io/tags/devops style=font-size:1rem>devops</a>
+<a href=/manuss20.github.io/tags/docker style=font-size:1rem>docker</a>
+<a href=/manuss20.github.io/tags/event style=font-size:2.0302313553994944rem>event</a>
+<a href=/manuss20.github.io/tags/event-grid style=font-size:1rem>event-grid</a>
+<a href=/manuss20.github.io/tags/eventos style=font-size:2.0302313553994944rem>eventos</a>
+<a href=/manuss20.github.io/tags/events style=font-size:1rem>events</a>
+<a href=/manuss20.github.io/tags/functions style=font-size:1rem>functions</a>
+<a href=/manuss20.github.io/tags/global-azure-bootcamp style=font-size:1rem>global-azure-bootcamp</a>
+<a href=/manuss20.github.io/tags/global-devops-bootcamp style=font-size:1rem>global-devops-bootcamp</a>
+<a href=/manuss20.github.io/tags/global-integration-bootcamp style=font-size:1rem>global-integration-bootcamp</a>
+<a href=/manuss20.github.io/tags/grid style=font-size:1rem>grid</a>
+<a href=/manuss20.github.io/tags/group-resources style=font-size:1.581642902557735rem>group-resources</a>
+<a href=/manuss20.github.io/tags/iaas style=font-size:1rem>iaas</a>
+<a href=/manuss20.github.io/tags/iac style=font-size:1rem>iac</a>
+<a href=/manuss20.github.io/tags/integration style=font-size:1rem>integration</a>
+<a href=/manuss20.github.io/tags/lifecycle style=font-size:1rem>lifecycle</a>
+<a href=/manuss20.github.io/tags/micosoft style=font-size:1rem>micosoft</a>
+<a href=/manuss20.github.io/tags/microservices style=font-size:1rem>microservices</a>
+<a href=/manuss20.github.io/tags/microservicios style=font-size:1rem>microservicios</a>
+<a href=/manuss20.github.io/tags/monitoring style=font-size:1rem>monitoring</a>
+<a href=/manuss20.github.io/tags/netcore style=font-size:1.7339516263546781rem>netcore</a>
+<a href=/manuss20.github.io/tags/netcoreconf style=font-size:1.7339516263546781rem>netcoreconf</a>
+<a href=/manuss20.github.io/tags/networking style=font-size:2.0302313553994944rem>networking</a>
+<a href=/manuss20.github.io/tags/paas style=font-size:1rem>paas</a>
+<a href=/manuss20.github.io/tags/processes style=font-size:1rem>processes</a>
+<a href=/manuss20.github.io/tags/saas style=font-size:1.366975813177339rem>saas</a>
+<a href=/manuss20.github.io/tags/serverless style=font-size:1rem>serverless</a>
+<a href=/manuss20.github.io/tags/templates style=font-size:1.581642902557735rem>templates</a>
+<a href=/manuss20.github.io/tags/terraforms style=font-size:1rem>terraforms</a>
+<a href=/manuss20.github.io/tags/workshops style=font-size:2.0302313553994944rem>workshops</a></section></section><footer id=site-footer><ul class=socnet-icons></ul><p class=copyright>&copy; 2020
+Manuss20
+.<br>Theme: <a href=https://github.com/pacollins/hugo-future-imperfect-slim target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>A <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP port</a> | Powered by <a href=https://gohugo.io/ title=0.75.1 target=_blank rel=noopener>Hugo</a></p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/manuss20.github.io/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/manuss20.github.io/js/bundle.min.c15b96a8004565d6e6bf5d5dc34a25f8d1bd3a6a3579d31318f5eb03cd657daf.js integrity="sha256-wVuWqABFZdbmv11dw0ol+NG9Omo1edMTGPXrA81lfa8="></script><script src=/manuss20.github.io/js/add-on.js></script></div></body></html>
