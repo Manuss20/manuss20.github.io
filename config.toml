@@ -1,4 +1,4 @@
-baseurl                 = "manuss20.github.io"
+baseurl                 = "https://manuss20.github.io"
 DefaultContentLanguage  = "en"
 title                   = "Manuss20"
 theme                   = "hugo-future-imperfect-slim"
