@@ -1,2 +1,2 @@
 # manuss20
-Blog
+Personal Blog
