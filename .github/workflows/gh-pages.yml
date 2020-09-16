@@ -26,7 +26,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v2.3.2
         env:
-          personal_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: manuss20/manuss20.github.io
           publish_dir: ./public
           user_name: manuss20
