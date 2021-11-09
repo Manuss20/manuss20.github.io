@@ -102,7 +102,6 @@ Esta asignación de roles se realiza desde la página Roles siguiendo unos senci
 - En la página Alain Charon - Perfil, selecciona Roles asignados.
 - Y aquí podemos ver los roles que están asignados para este usuario. Si queremos darle roles de administrador de aplicaciones, por ejemplo, debemos seleccionar este rol y pulsamos en añadir (Add).
 
-
 ##Creación masiva de usuarios en Azure Active Directory
 En este punto seguro que adivino si piensas que todo esto es muy bonito pero es un lento, lento, lento proceso que no puedes asumir si tenemos que ir usuario a usuario. Y tienes toda la razón.
 
