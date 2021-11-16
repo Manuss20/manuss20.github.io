@@ -1,13 +1,13 @@
 +++
 title = "About"
 layout = "about"
-description = "My name is Manuel Sánchez, I´m Technical Manager at Everis & Microsoft Azure MVP."
+description = "My name is Manuel Sánchez, I´m Technical Manager & Azure Evangelist at NTT Data & Microsoft Azure MVP."
 date = "2020-06-30"
 aliases = ["about-us","about-manuel"]
 author = "Manuel Sánchez"
 +++
 
-My name is Manuel Sánchez, I´m **Technical Manager at [everis](https://www.everis.com/)** & **Microsoft Azure MVP**.
+My name is Manuel Sánchez, I´m **Technical Manager & Azure Evangelist at [NTT Data](https://nttdata.com/)** & **Microsoft Azure MVP**.
 Passionate about new technologies, highlighting Netcore , Microsoft Azure, Xamarin, IA, Bots and ASP.NET. Passionate about team management. I contribute to the developers community writing articles in my personal blog and giving speeches in numerous events. I am also one of the **[Netcoreconf](https://netcoreconf.com/)** & **[CATzure](https://www.meetup.com/es-ES/CATzure/)** leads.
 
 
