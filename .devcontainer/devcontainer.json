@@ -10,7 +10,7 @@
 			// Update VERSION to pick a specific hugo version.
 			// Example versions: latest, 0.73.0, 0,71.1
 			// Rebuild the container if it already exists to update.
-			"VERSION": "0.75.1",
+			"VERSION": "latest",
 		}
 	},
 	// Set *default* container specific settings.json values on container create.
