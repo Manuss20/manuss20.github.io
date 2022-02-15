@@ -1,3 +1,4 @@
+
 name: github pages
 
 on:
@@ -10,7 +11,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
-      
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2.4.13
         with:
@@ -24,7 +25,7 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3.7.3
-        env:
+        with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_branch: master
           publish_dir: ./public
