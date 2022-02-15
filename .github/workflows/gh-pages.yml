@@ -1,4 +1,3 @@
-
 name: github pages
 
 on:
@@ -16,6 +15,7 @@ jobs:
         uses: peaceiris/actions-hugo@v2.4.13
         with:
           hugo-version: "latest"
+          extended: true
 
       - name: Build
         run: hugo --gc --minify --cleanDestinationDir
