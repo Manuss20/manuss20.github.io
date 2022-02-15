@@ -1,0 +1,53 @@
+mainSections = ["posts", "docs"] # Default to ["posts"].
+titleSeparator = "|" # Title separator. Default to "-".
+description = "An extreme fast, responsive and feature-rich blog theme for Hugo"
+keywords = "Hugo, Bootstrap, Blog Theme"
+images = ["site-feature-image.png"]
+logo = "images/logo.png" 
+brand = "Manuss20"
+palettes = []
+
+# Google Adsense
+googleAdsense = ""
+
+# countTaxonomyPosts = false
+# taxonomyPostCount = 3
+# taxonomyPaginate = 2
+categoryCount	= 15
+tagCount = 15
+titleCase = true # Capitalized title.
+viewer = true
+
+
+[codeBlock]
+  # maxLines = 8
+  lineNos = false
+  
+[post]
+  # excerpt = "description"
+  # excerptMaxLength = 120
+  copyright = false # Whether to display copyright section on each post.
+  # plainifyExcerpt = false # Format excerpt in HTML if false.
+
+[archive]
+  paginate = 20 # Archive pagination. Default to 100.
+  # dateFormat = "01-02" # Archive date format. Default to "Jan 2".
+
+[search]
+  paginate = 5 # Pagination. Default to 10.
+  # resultContentWordCount = 240 # The maximum word count of result content for displaying.
+  # Fuse.js options. See https://fusejs.io/api/options.html.
+  [search.fuse]
+    # ignoreLocation = true
+    # location = 0
+    # isCaseSensitive = false
+    minMatchCharLength = 3
+    threshold = 0.6
+    distance = 500
+    # useExtendedSearch = true
+
+[fontSize] # Comment or remove this settings to disable font size switcher.
+  # extraSmall = ".8rem"
+  # small = ".9rem"
+  # large = "1.1rem"
+  # extraLarge = "1.2rem"

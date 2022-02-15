@@ -1,0 +1,33 @@
+baseURL = "https://manuss20.com"
+title = "Manuss20 Blog"
+theme = "hugo-theme-bootstrap"
+copyright = "Copyright © {year} Manuel Sánchez. All Rights Reserved."
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+paginate = 5
+# googleAnalytics = "UA-123-45"
+enableRobotsTXT = true
+enableEmoji = true
+pygmentsUseClasses = true
+canonifyurls = true
+
+[permalinks]
+  posts = "/:year/:month/:day/:title/"
+
+[mediaTypes]
+  [mediaTypes."application/manifest+json"]
+    suffixes = ["json"]
+
+[outputFormats]
+  [outputFormats.MANIFEST]
+    name = "manifest"
+    baseName = "manifest"
+    mediaType = "application/manifest+json"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON", "MANIFEST"]
+
+[taxonomies]
+  category = "categories"
+  series = "series"
+  tag = "tags"

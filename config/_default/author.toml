@@ -1,0 +1,5 @@
+name = "Manuel Sanchez"
+avatar = "images/profile.jpg" # Avatar image. Default to "images/profile.webp".
+bio = "Technical Manager & Azure Evangelist at NTT DATA EMEAL| Microsoft Azure MVP | Founder and Organizer @netcoreconf & @CAT_zure"
+company = 'NTT DATA'
+location = "Madrid, Spain"
