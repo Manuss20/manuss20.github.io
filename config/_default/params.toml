@@ -1,7 +1,7 @@
 mainSections = ["posts", "docs"] # Default to ["posts"].
 titleSeparator = "|" # Title separator. Default to "-".
-description = "An extreme fast, responsive and feature-rich blog theme for Hugo"
-keywords = "Hugo, Bootstrap, Blog Theme"
+description = "Technical Manager & Azure Evangelist at NTT DATA EMEAL| Microsoft Azure MVP | Founder and Organizer @netcoreconf & @CAT_zure"
+keywords = "Manuel Sánchez, Manuss20, MVP Azure, Azure, Microsoft, Architecture, Functions"
 images = ["site-feature-image.png"]
 logo = "images/logo.png" 
 brand = "Manuss20"
