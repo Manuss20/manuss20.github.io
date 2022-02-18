@@ -1,7 +1,7 @@
 +++
 author = "Manuel Sanchez"
 title = "Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster"
-date = "2021-06-06"
+date = "2021-05-20"
 description="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."
 tags = [
     "Azure", "Azure-Arc", "Arc", "Hybrid", "IoT", "Kubernetes", "AKS", "Jumpstart"
