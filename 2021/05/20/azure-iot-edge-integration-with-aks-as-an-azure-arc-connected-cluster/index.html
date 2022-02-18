@@ -9,15 +9,15 @@
 <link rel=manifest href=https://manuss20.com/manifest.json>
 <meta name=keywords content>
 <meta name=description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta itemprop=name content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster">
-<meta itemprop=description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta itemprop=datePublished content="2021-06-06T00:00:00+00:00">
-<meta itemprop=dateModified content="2021-06-06T00:00:00+00:00">
+<meta itemprop=description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta itemprop=datePublished content="2021-05-20T00:00:00+00:00">
+<meta itemprop=dateModified content="2021-05-20T00:00:00+00:00">
 <meta itemprop=wordCount content="1207"><meta itemprop=image content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png">
 <meta itemprop=keywords content="Azure,Azure-Arc,Arc,Hybrid,IoT,Kubernetes,AKS,Jumpstart,"><meta property="og:title" content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster">
 <meta property="og:description" content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion.">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://manuss20.com/2021/06/06/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/"><meta property="og:image" content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-06-06T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-06-06T00:00:00+00:00">
+<meta property="og:url" content="https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/"><meta property="og:image" content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-05-20T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-05-20T00:00:00+00:00">
 <meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png">
 <meta name=twitter:title content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster">
@@ -39,10 +39,10 @@ Manuss20
 </button>
 </div>
 <div class=offcanvas-body>
-<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button" target=_blank href="https://twitter.com/intent/tweet?title=Azure%20IoT%20Edge%20integration%20with%20AKS%20as%20an%20Azure%20Arc%20Connected%20Cluster&url=https%3a%2f%2fmanuss20.com%2f2021%2f06%2f06%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f">
+<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button" target=_blank href="https://twitter.com/intent/tweet?title=Azure%20IoT%20Edge%20integration%20with%20AKS%20as%20an%20Azure%20Arc%20Connected%20Cluster&url=https%3a%2f%2fmanuss20.com%2f2021%2f05%2f20%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f">
 <i class="fab fa-fw fa-twitter"></i> Twitter
 </a>
-<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmanuss20.com%2f2021%2f06%2f06%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f">
+<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmanuss20.com%2f2021%2f05%2f20%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f">
 <i class="fab fa-fw fa-facebook-f"></i> Facebook
 </a>
 </div>
@@ -148,8 +148,8 @@ Manuss20
 </h1>
 </div>
 <div class=card-body><div class=post-meta>
-<span class=post-date title="created on 2021-06-06 00:00:00 +0000 UTC.">
-Jun 6, 2021
+<span class=post-date title="created on 2021-05-20 00:00:00 +0000 UTC.">
+May 20, 2021
 </span><span class=post-reading-time>
 6 min read
 </span><span class=post-taxonomies><a href=https://manuss20.com/categories/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/categories/azure-arc/ class="badge post-taxonomy">Azure-Arc</a><a href=https://manuss20.com/categories/arc/ class="badge post-taxonomy">Arc</a><a href=https://manuss20.com/categories/hybrid/ class="badge post-taxonomy">Hybrid</a><a href=https://manuss20.com/categories/iot/ class="badge post-taxonomy">IoT</a><a href=https://manuss20.com/categories/kubernetes/ class="badge post-taxonomy">Kubernetes</a><a href=https://manuss20.com/categories/aks/ class="badge post-taxonomy">AKS</a><a href=https://manuss20.com/categories/jumpstart/ class="badge post-taxonomy">Jumpstart</a><a href=https://manuss20.com/tags/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/tags/azure-arc/ class="badge post-taxonomy">Azure-Arc</a><a href=https://manuss20.com/tags/arc/ class="badge post-taxonomy">Arc</a><a href=https://manuss20.com/tags/hybrid/ class="badge post-taxonomy">Hybrid</a><a href=https://manuss20.com/tags/iot/ class="badge post-taxonomy">IoT</a><a href=https://manuss20.com/tags/kubernetes/ class="badge post-taxonomy">Kubernetes</a><a href=https://manuss20.com/tags/aks/ class="badge post-taxonomy">AKS</a><a href=https://manuss20.com/tags/jumpstart/ class="badge post-taxonomy">Jumpstart</a></span>
@@ -351,10 +351,10 @@ We can use the following commands to check it:</li>
 </div></div>
 <div class=card-footer><div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
 <i class="fas fa-fw fa-chevron-left"></i>
-<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
+<a href=https://manuss20.com/2020/03/14/dapr/>DAPR
 </a>
 </div><div class="post-nav post-next">
-<a href=https://manuss20.com/2021/11/09/azure-ad-managed-identity/>Azure AD Managed Identity
+<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
 </a>
 <i class="fas fa-fw fa-chevron-right"></i>
 </div></div></div>
@@ -367,11 +367,6 @@ We can use the following commands to check it:</li>
 <a href=https://manuss20.com/2019/06/01/azure-digital-twins/>Azure Digital Twins
 </a>
 <span class="float-end post-date">Jun 1, 2019
-</span>
-</li><li>
-<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
-</a>
-<span class="float-end post-date">Jun 6, 2021
 </span>
 </li><li>
 <a href=https://manuss20.com/2020/03/14/dapr/>DAPR
@@ -387,6 +382,11 @@ We can use the following commands to check it:</li>
 <a href=https://manuss20.com/2020/01/20/eventos-netcoreconf-barcelona-2020/>[Eventos] Netcoreconf Barcelona 2020
 </a>
 <span class="float-end post-date">Jan 20, 2020
+</span>
+</li><li>
+<a href=https://manuss20.com/2019/11/22/monitorizaci%C3%B3n-de-aplicaciones-en-azure/>Monitorización De Aplicaciones en Azure
+</a>
+<span class="float-end post-date">Nov 22, 2019
 </span>
 </li></ul>
 </div>
@@ -424,10 +424,10 @@ We can use the following commands to check it:</li>
 <a href=https://manuss20.com/2021/11/09/azure-ad-managed-identity/>Azure AD Managed Identity
 </a>
 </li><li>
-<a href=https://manuss20.com/2021/06/06/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/>Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster
+<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
 </a>
 </li><li>
-<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
+<a href=https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/>Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster
 </a>
 </li><li>
 <a href=https://manuss20.com/2020/03/14/dapr/>DAPR
