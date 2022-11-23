@@ -1,351 +1,39 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>Azure AD Managed Identity | Manuss20 Blog</title><link rel=apple-touch-icon href=https://manuss20.com/images/icons/icon-180x180.png sizes=180x180>
-<link rel=icon href=https://manuss20.com/images/icons/icon-32x32.png sizes=32x32 type=image/png>
-<link rel=icon href=https://manuss20.com/images/icons/icon-16x16.png sizes=16x16 type=image/png>
-<link rel=icon href=https://manuss20.com/images/icons/favicon.ico>
-<link rel=manifest href=https://manuss20.com/manifest.json>
-<meta name=keywords content>
-<meta name=description content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso."><meta itemprop=name content="Azure AD Managed Identity">
-<meta itemprop=description content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso."><meta itemprop=datePublished content="2021-11-09T00:00:00+00:00">
-<meta itemprop=dateModified content="2021-11-09T00:00:00+00:00">
-<meta itemprop=wordCount content="2249"><meta itemprop=image content="https://manuss20.com/images/posts/Azure-ARM.jpg">
-<meta itemprop=keywords content="Azure,Azure AD,Managed Identity,Identity,Users,Groups,Privileges,Cloud,"><meta property="og:title" content="Azure AD Managed Identity">
-<meta property="og:description" content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://manuss20.com/2021/11/09/azure-ad-managed-identity/"><meta property="og:image" content="https://manuss20.com/images/posts/Azure-ARM.jpg"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-11-09T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-11-09T00:00:00+00:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://manuss20.com/images/posts/Azure-ARM.jpg">
-<meta name=twitter:title content="Azure AD Managed Identity">
-<meta name=twitter:description content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso.">
-<meta name=twitter:site content="@manuss20">
-<link rel=stylesheet href=https://manuss20.com/css/main.min.507afbe6e4670fa3e961a0b35816b5daeb36029866fd6bd7b9d7871fcf88faa5.css integrity="sha256-UHr75uRnD6PpYaCzWBa12us2Aphm/WvXudeHH8+I+qU=" crossorigin=anonymous><link rel=stylesheet href=https://manuss20.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css integrity="sha256-PSKHlLztu/oEEr64+8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin=anonymous></head>
-<body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
-<div class=container>
-<button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Azure AD Managed Identity | Manuss20 Blog</title><link rel=apple-touch-icon href=https://manuss20.com/images/icons/icon-180x180.png sizes=180x180><link rel=icon href=https://manuss20.com/images/icons/icon-32x32.png sizes=32x32 type=image/png><link rel=icon href=https://manuss20.com/images/icons/icon-16x16.png sizes=16x16 type=image/png><link rel=icon href=https://manuss20.com/images/icons/favicon.ico><link rel=manifest href=https://manuss20.com/manifest.json><meta name=keywords content><meta name=description content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso."><meta itemprop=name content="Azure AD Managed Identity"><meta itemprop=description content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso."><meta itemprop=datePublished content="2021-11-09T00:00:00+00:00"><meta itemprop=dateModified content="2021-11-09T00:00:00+00:00"><meta itemprop=wordCount content="2249"><meta itemprop=image content="https://manuss20.com/images/posts/Azure-ARM.jpg"><meta itemprop=keywords content="Azure,Azure AD,Managed Identity,Identity,Users,Groups,Privileges,Cloud,"><meta property="og:title" content="Azure AD Managed Identity"><meta property="og:description" content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso."><meta property="og:type" content="article"><meta property="og:url" content="https://manuss20.com/2021/11/09/azure-ad-managed-identity/"><meta property="og:image" content="https://manuss20.com/images/posts/Azure-ARM.jpg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-11-09T00:00:00+00:00"><meta property="article:modified_time" content="2021-11-09T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://manuss20.com/images/posts/Azure-ARM.jpg"><meta name=twitter:title content="Azure AD Managed Identity"><meta name=twitter:description content="Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso."><meta name=twitter:site content="@manuss20"><link rel=stylesheet href=https://manuss20.com/css/main.min.24196952817c68c8b90d8fa573d560fa62766baa0622bdc0e862255f4a4d1307.css integrity="sha256-JBlpUoF8aMi5DY+lc9Vg+mJ2a6oGIr3A6GIlX0pNEwc=" crossorigin=anonymous><link rel=stylesheet href=https://manuss20.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css integrity="sha256-PSKHlLztu/oEEr64+8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin=anonymous></head><body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top"><div class=container><button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
 <i class="fas fa-bars"></i>
 </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href=https://manuss20.com><img class=logo alt=Logo src=https://manuss20.com/images/logo.png loading=lazy width=100 height=88>
-Manuss20
-</a>
-<div class="offcanvas offcanvas-bottom surface" tabindex=-1 id=offcanvasSocialShare aria-labelledby=offcanvasSocialShare>
-<div class=offcanvas-header>
-<h3 class=offcanvas-title>Share</h3>
-<button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
-<i class="fas fa-times"></i>
-</button>
-</div>
-<div class=offcanvas-body>
-<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button" target=_blank href="https://twitter.com/intent/tweet?title=Azure%20AD%20Managed%20Identity&url=https%3a%2f%2fmanuss20.com%2f2021%2f11%2f09%2fazure-ad-managed-identity%2f">
-<i class="fab fa-fw fa-twitter"></i> Twitter
-</a>
-<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmanuss20.com%2f2021%2f11%2f09%2fazure-ad-managed-identity%2f">
-<i class="fab fa-fw fa-facebook-f"></i> Facebook
-</a>
-</div>
-</div>
-<button class=navbar-settings type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSettings aria-controls=offcanvasSettings aria-label="Toggle settings">
-<i class="fas fa-ellipsis-v"></i>
-</button>
-<div class="offcanvas offcanvas-end surface h-100" tabindex=-1 id=offcanvasSettings aria-labelledby=offcanvasSettings>
-<div class=offcanvas-header>
-<h3 class=offcanvas-title>Settings</h3>
-<button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
-<i class="fas fa-times"></i>
-</button>
-</div>
-<div class="offcanvas-body d-flex flex-column">
-<section class=setting>
-<form class=row>
-<div class=col-auto>
-<label><i class="fas fa-fw fa-adjust"></i> Mode</label>
-</div>
-<div class="col-auto ms-auto">
-<div class="form-check form-switch">
-<input class=form-check-input type=checkbox id=modeSwitcher>
-</div>
-</div>
-</form>
-</section>
-<section class=setting>
-<form class="font-size-switcher-form row">
-<div class=col-auto>
-<label for=fontSize class=form-label><i class="fas fa-fw fa-font"></i> Font Size</label>
-</div>
-<div class="col-auto ms-auto">
-<input type=range class=form-range min=-2 max=2 id=fontSize>
-</div>
-</form>
-</section>
-<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
-<a role=button class="action action-go-back" href="javascript: window.history.back();">
-<span class=action-icon><i class="fas fa-2x fa-arrow-left"></i></span> Go back
-</a>
-<a role=button class="action action-reload-page">
-<span class=action-icon><i class="fas fa-2x fa-redo-alt"></i></span> Reload
-</a>
-<a role=button class="action action-copy-url">
-<span class=action-icon><i class="fas fa-2x fa-link"></i></span> Copy URL
-</a><a class="action action-social-share" type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSocialShare aria-controls=offcanvasSocialShare aria-label="Toggle social share">
-<span class=action-icon><i class="fas fa-2x fa-share-alt"></i></span> Share
-</a></section>
-</div>
-</div>
-<div class="collapse navbar-collapse" tabindex=-1 id=navbarSupportedContent aria-labelledby=navbarSupportedContent>
-<form class="search-bar my-1" action=https://manuss20.com/search>
-<div class="input-group input-group-sm">
-<span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
-<input class="form-control rounded-pill" name=q type=search aria-label=Search>
-</div>
-</form>
-<ul class="navbar-nav ms-auto"><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/about/>
-<i class="fas fa-fw fa-file-archive"></i>About Me
-</a>
-</li><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/archives/>
-<i class="fas fa-fw fa-file-archive"></i>Archives
-</a>
-</li><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/categories/>
-<i class="fas fa-fw fa-folder"></i>Categories
-</a>
-</li><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/tags/>
-<i class="fas fa-fw fa-tags"></i>Tags
-</a>
-</li></ul>
-</div>
-</div>
-</nav>
-</header>
-<main role=main class=container>
-<div class="row content">
-<div class=col-lg-8>
-<div class=container><nav class="row card component" aria-label=breadcrumb>
-<div class=card-body>
-<ol class=breadcrumb><li class=breadcrumb-item><a href=https://manuss20.com/>Home</a></li><li class=breadcrumb-item><a href=https://manuss20.com/posts/>Posts</a></li><li class="breadcrumb-item active">Azure AD Managed Identity</li></ol>
-</div>
-</nav><div class=post-panel-wrapper>
-<div class="d-flex flex-column component rounded post-panel">
-<a class="action action-panel-toggler" role=button title="Panel toggler">
-<i class="fas fa-fw fa-chevron-circle-down"></i>
-</a>
-<a id=sidebarToggler class="action d-none d-lg-block" role=button title="Sidebar toggler">
-<i class="fas fa-fw fa-expand-alt" data-fa-transform=rotate-45></i>
-</a>
-</div>
-</div>
-<article class="row card component mb-4 post">
-<div class=card-header>
-<h1 class="card-title post-title">Azure AD Managed Identity
-</h1>
-</div>
-<div class=card-body><div class=post-meta>
-<span class=post-date title="created on 2021-11-09 00:00:00 +0000 UTC.">
-Nov 9, 2021
-</span><span class=post-reading-time>
-11 min read
-</span><span class=post-taxonomies><a href=https://manuss20.com/categories/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/categories/azure-ad/ class="badge post-taxonomy">Azure AD</a><a href=https://manuss20.com/categories/managed-identity/ class="badge post-taxonomy">Managed Identity</a><a href=https://manuss20.com/categories/identity/ class="badge post-taxonomy">Identity</a><a href=https://manuss20.com/categories/users/ class="badge post-taxonomy">Users</a><a href=https://manuss20.com/categories/groups/ class="badge post-taxonomy">Groups</a><a href=https://manuss20.com/categories/privileges/ class="badge post-taxonomy">Privileges</a><a href=https://manuss20.com/categories/cloud/ class="badge post-taxonomy">Cloud</a><a href=https://manuss20.com/tags/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/tags/azure-ad/ class="badge post-taxonomy">Azure AD</a><a href=https://manuss20.com/tags/managed-identity/ class="badge post-taxonomy">Managed Identity</a><a href=https://manuss20.com/tags/identity/ class="badge post-taxonomy">Identity</a><a href=https://manuss20.com/tags/users/ class="badge post-taxonomy">Users</a><a href=https://manuss20.com/tags/groups/ class="badge post-taxonomy">Groups</a><a href=https://manuss20.com/tags/privileges/ class="badge post-taxonomy">Privileges</a><a href=https://manuss20.com/tags/cloud/ class="badge post-taxonomy">Cloud</a></span>
-</div>
-<div class="post-content mb-3"><p>Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso.</p>
-<p>##¿Qué es Azure Active Directory?
-Azure Active Directory (también conocido como Azure AD) es un servicio multi-inquilino completamente administrado de Microsoft que ofrece capacidades de identidad y acceso para aplicaciones que se ejecutan en Microsoft Azure y para aplicaciones que se ejecutan en un entorno local. Esto hace que a menudo pueda ser confundido con Active Directory para Windows Server, en realidad esto va mucho más allá de lo que ya estamos familiarizados en entornos Windows. Para resumirlo, no, Azure AD no es Active Directory ejecutándose en máquinas virtuales de Azure.</p>
-<p>Además con Azure AD podemos lograr cosas como el inicio de sesión único (SSO) o multifactor, acceso a aplicaciones aplicaciones, consultar los permisos e información de usuarios y grupos, e incluso escribir cambios en el directorio y la mejor parte es que puede integrar Azure AD con Windows Server AD.</p>
-<p>Azure AD es un lugar donde se crearán los usuarios y los perfiles. Por lo tanto, los usuarios o empleados de una organización iniciarán sesión con su nombre de usuario y contraseña. Y, por supuesto, a veces puede requerir autenticación multifactor. Y luego, basándonos en esa identidad, proporcionamos acceso a las aplicaciones.</p>
-<p>##Autenticación frente a autorización
-Antes de continuar, primero me gustaría poder discernir entre dos conceptos que tienden a confundirse; la diferencia entre la autenticación y autorización. Puede que ya lo sepas. Pero de todos modos lo explicaré rápidamente.</p>
-<p>El proceso de identificar a alguien a sí mismo se llama autenticación. Es como si vamos por la calle y nos piden que nos identifiquemos - ¡Alto, Policía!, lo que seguramente haremos es mostrar nuestro DNI, Pasaporte o licencia de conducir. Fácil ¿verdad?</p>
-<p>Entonces, ¿qué es la autorización?</p>
-<p>Si tomamos el ejemplo anterior. Ya hemos demostrado nuestra identidad; la siguiente pregunta inmediata es ¿qué puedo hacer o qué no puedo hacer con esa identidad en una organización o sistema en particular? ¿Estoy en el lugar correcto o me he colado?</p>
-<p>Disponer de la autorización oportuna nos permite llegar todo lo lejos que nos permita la autoridad que otorga ese derecho. Siguiendo con nuestro ejemplo, en un concierto, ¿tenemos una entrada que nos permite acceder al recinto o disponemos de un pase VIP que nos da acceso al backstage?</p>
-<p>En el contexto de Azure, Autorización es poder responder a la pregunta ¿Cuáles son los diferentes servicios a los que puedo acceder y a los que no tengo acceso?</p>
-<p>##Autenticación multifactor
-Ahora hablemos un poco de la autenticación multifactor. Estoy seguro que es un término familiar que ya lo has oído antes. Cuando iniciamos sesión en un sitio web en particular, proporcionamos nuestro nombre de usuario y contraseña. Imagina que por alguna razón nuestra contraseña se filtra. Entonces alguien sin acceso autorizado y que tenga nuestra contraseña puede acceder a los datos y servicios que contiene.</p>
-<p>Entonces, ¿cómo podemos mitigar este problema? Ahí es cuando necesitamos la autenticación multifactor (MFA). Además del nombre de usuario y la contraseña, también se debe proporcionar la identidad en forma de probablemente una OTP que obtenemos en nuestro teléfono móvil o mediante una llamada telefónica o usando una aplicación móvil instalada en donde confirmamos que somos nosotros los que estamos haciendo inicio de sesión.</p>
-<p>La autenticación multifactor funciona al requerir dos o más de los siguientes métodos de autenticación:</p>
-<ul>
-<li>
-<p>Algo que sepas, normalmente una contraseña.</p>
-</li>
-<li>
-<p>Algo que tenga, como un dispositivo confiable que no se pueda duplicar fácilmente. (Por ejemplo: teléfono o llave de hardware)</p>
-</li>
-<li>
-<p>Algo que eres: datos biométricos como una huella dactilar o un escaneo facial.</p>
-</li>
-</ul>
-<p>##¿Qué es una identidad administrada?
-Las identidades administradas proporcionan una identidad para que las aplicaciones la usen cuando se conectan a recursos que admiten la autenticación de Azure Active Directory (Azure AD). Fundamentalmente, la gestión de credenciales es manejada por la identidad administrada (de ahí la palabra), y no por la aplicación o el desarrollador.</p>
-<p>Dicho de otro modo, la aplicación usa la identidad administrada para obtener un token de Azure AD. Este token se puede usar para acceder a otros recursos de Azure, comúnmente Azure Key Vault o Azure Storage.</p>
-<p>Inicio de sesión único (SSO)</p>
-<p>La misma identidad se puede utilizar en varias aplicaciones. Y esa función se denomina inicio de sesión único. Inicia sesión una vez, y con ese inicio de sesión en particular, intenta acceder a todos los recursos.</p>
-<p>Gestión de aplicaciones</p>
-<p>Como mencioné antes, cuando creamos y configuramos múltiples aplicaciones para Azure AD. Estas aplicaciones solo pueden ser utilizadas por usuarios dentro de nuestra organización o, en ciertos casos, por algunos usuarios invitados pertenecientes a otra organización. Por lo tanto, podemos invitar a usuarios de otra organización. Eso significa que hay un inquilino AD más donde existe la identidad del usuario. Pero en nuestro AD, va a existir como invitado.</p>
-<p>Una vez que el usuario invitado se agrega a nuestro Directorio Activo, junto con nuestros otros usuarios, a este usuario en particular también se le pueden otorgar permisos como cualquier otro usuario dentro de la misma organización.</p>
-<p>Gestión de dispositivos</p>
-<p>Ya por último, podemos proporcionar administración de dispositivos mediante Azure AD uniendo nuestros dispositivos móviles u ordenadores portátiles al inquilino de Azure. A través del inquilino, podemos controlar el dispositivo. Un ejemplo práctico es cuando pierdes tu dispositivo y luego puedes bloquear tu cuenta o más concretamente el acceso mediante ese dispositivo. Por lo tanto, en el dispositivo, nadie más puede iniciar sesión y robar tus datos.</p>
-<p>##Agregando usuarios a Azure AD
-Tras las explicaciones previas, ahora vamos a agregar nuestro primer usuario. Para ello debemos seguir los siguientes pasos:</p>
-<p>Inicia sesión en Azure Portal como administrador de usuarios para tu organización.</p>
-<p>En la barra superior, busca y selecciona Azure Active Directory.</p>
-<p>Selecciona Usuarios y, a continuación, selecciona Nuevo usuario.</p>
-<p>En la página Usuario puedes definir la información relativa para este usuario:</p>
-<ul>
-<li>
-<p>Nombre. Nombre y apellidos del nuevo usuario. Por ejemplo, Mary Poppins.</p>
-</li>
-<li>
-<p>Nombre de usuario. Nombre de usuario del nuevo usuario. Por ejemplo, <a href=mailto:mary@contoso.com>mary@contoso.com</a>.
-En la parte del dominio del nombre de usuario debemos usar el nombre de dominio predeterminado inicial, .onmicrosoft.com o un nombre de dominio personalizado, como de contoso.com.</p>
-</li>
-<li>
-<p>Grupos. Podemos agregar el usuario a uno o varios de los grupos existentes.</p>
-</li>
-<li>
-<p>Rol del directorio. Aquí podemos definir alguno de los permisos administrativos de Azure AD para el usuario</p>
-</li>
-<li>
-<p>Información del trabajo. Podemos agregar más información sobre el usuario aquí o hacerlo más adelante.</p>
-</li>
-<li>
-<p>Copia la contraseña generada automáticamente proporcionada en el cuadro de texto Contraseña. Esta será la contraseña que debemos proporcionar al usuario para iniciar sesión por primera vez.</p>
-</li>
-</ul>
-<p>Selecciona Crear. El usuario queda así definido y se agrega a la organización de Azure AD.</p>
-<p>También podemos invitar a un usuario invitado nuevo a colaborar con nuestra organización si selecciona Invitar usuario en la página Nuevo usuario. El usuario recibirá una invitación por correo electrónico que debe aceptar para empezar a colaborar.</p>
-<p>##Asignación de roles
-Lo comentaba antes pero quizá es mejor dedicarle unas líneas adicionales. En Azure es posible administrar usuarios asignándoles alguno de los diferentes roles disponibles. En Azure Active Directory (Azure AD), por ejemplo, si uno de los usuarios necesita permiso para administrar recursos de Azure AD, debemos asignarlo a un rol que proporcione los permisos que necesita.</p>
-<p>Esta asignación de roles se realiza desde la página Roles siguiendo unos sencillos pasos:</p>
-<ul>
-<li>Accedemos con nuestro usuario de administrador global a Azure Portal.</li>
-<li>En la barra superior busca y selecciona Azure Active Directory.</li>
-<li>Selecciona Usuarios.</li>
-<li>Ahora seleccionamos el usuario que obtiene la asignación de roles. Por ejemplo, Alain Charon.</li>
-<li>En la página Alain Charon - Perfil, selecciona Roles asignados.</li>
-<li>Y aquí podemos ver los roles que están asignados para este usuario. Si queremos darle roles de administrador de aplicaciones, por ejemplo, debemos seleccionar este rol y pulsamos en añadir (Add).</li>
-</ul>
-<p>##Creación masiva de usuarios en Azure Active Directory
-En este punto seguro que adivino si piensas que todo esto es muy bonito pero es un lento, lento, lento proceso que no puedes asumir si tenemos que ir usuario a usuario. Y tienes toda la razón.</p>
-<p>Azure Active Directory (Azure AD) admite operaciones de creación y eliminación de usuarios en lotes y la descarga de listas de usuarios. Solo necesitamos rellenar una plantilla .CSV que se puede descargar en el portal de Azure AD.</p>
-<p>##Grupos de usuarios
-Un grupo Azure AD permite organizar a los usuarios, facilitando la gestión de los permisos. Los grupos permiten al propietario del recurso (o al propietario de Azure AD-Directory) asignar un conjunto de permisos de acceso a todos los miembros del grupo.</p>
-<p>Los grupos permiten definir una política y luego añadir y eliminar usuarios específicos. De este modo, se puede conceder o denegar el acceso con un esfuerzo mínimo.</p>
-<p>Aún mejor, Azure AD ofrece la posibilidad de definir la afiliación en función de reglas, como el departamento en el que trabaja un usuario o el cargo que ocupa.</p>
-<p>En Azure AD podemos definir dos tipos diferentes de grupos:</p>
-<ul>
-<li>Grupos de seguridad. Son los grupos de seguridad más comunes y se utilizan para gestionar el acceso de los miembros y de los ordenadores a los recursos compartidos por un grupo de usuarios. Por ejemplo, puede crear un grupo de seguridad para una política de seguridad específica. De esta manera, puede dar un conjunto de permisos a todos los miembros a la vez en lugar de añadir permisos individualmente para cada miembro. Esta opción requiere un administrador de Azure AD.</li>
-<li>Grupos de Microsoft 365. Estos grupos ofrecen oportunidades de colaboración al dar a los miembros acceso a una bandeja de entrada, un calendario y archivos compartidos, SharePoint y más. Esta opción también le permite dar acceso al grupo a personas ajenas a su organización. Esta opción está disponible tanto para los usuarios como para los administradores.</li>
-</ul>
-<p>##Grupos dinámico en Azure AD
-En Azure Active Directory (Azure AD), también podemos usar reglas para determinar la pertenencia a grupos según las propiedades de usuario o dispositivo. La pertenencia dinámica es compatible con grupos de seguridad o grupos de Microsoft 365. Cuando se aplica una regla de pertenencia a grupos, se evalúan los atributos de usuario y dispositivo para ver si coinciden con la regla de pertenencia. Cuando cambian los atributos de un usuario o dispositivo, se procesan todos los cambios de pertenencia de las reglas de grupo dinámico de la organización.</p>
-<p>##Control de acceso basado en rol de Azure (RBAC)
-En términos de computación en la nube, el control de acceso juega un papel vital para administrar los permisos de manera efectiva. Azure RBAC es un sistema de autorización basado en Azure Resource Manager que proporciona administración de acceso específico a los recursos de Azure. La administración de acceso de los recursos en la nube es una función importantísima para cualquier organización. Azure RBAC ayuda a administrar quién tiene acceso a los recursos de Azure, qué pueden hacer con esos recursos y a qué áreas puede acceder.</p>
-<p>##Algunos escenarios para Azure Access Control (Azure RBAC)</p>
-<ul>
-<li>Otorgar acceso a diferentes recursos de Azure con uno o varios roles. Ejemplo: permitir que un usuario administre la aplicación de Azure y el servicio SQL de Azure. Podemos dar Contributor, Reader, owner, Manage role, Monitor reader/contributor, website contributor etc.</li>
-<li>Del mismo modo, otorgar acceso a nivel de suscripción. Ejemplo: permitir que un usuario cree solo una máquina virtual en una suscripción específica. O permita que el usuario cree el servicio de aplicaciones de Azure, así como servicios lógicos (múltiples) con rol de contribución, lectura o propietario.</li>
-<li>Dar diferentes accesos a diferentes ámbitos como grupo de administración, suscripciones, grupo de recursos o recursos.</li>
-<li>Otorgar acceso a una aplicación para acceder a los recursos también.</li>
-<li>Podemos hacer de muchas a muchas relaciones entre roles, ámbitos y usuarios o grupo (principal de seguridad).</li>
-</ul>
-<p>Hay tres componentes principales que se deben comprender para el control de acceso basado en roles de Azure: entidad de seguridad (quién), rol (qué) y alcance (dónde).</p>
-<p>El director de seguridad básicamente representa quién obtendrá el acceso, como usuarios, grupo, director de servicio e identidad administrada. (Quien es)</p>
-<p>Ámbito es el conjunto de recursos al que se aplica el acceso. Cuando se asigna un rol, es posible limitar aún más las acciones permitidas si se define un ámbito. Esto resulta útil si desea convertir a alguien en Colaborador del sitio web, pero solo para un grupo de recursos.</p>
-<p>En Azure, puede especificar un ámbito en cuatro niveles: grupo de administración, suscripción, grupo de recursos o recurso. Los ámbitos se estructuran en una relación de elementos primarios y secundarios. Puede asignar roles en cualquiera de estos niveles de ámbito.</p>
-<p>Diagrama que muestra los niveles de ámbito de una asignación de roles.</p>
-<p>Las relaciones entre el principio de seguridad, la definición de rol y el alcance son una especie de muchos a muchos.</p>
-<p>Podemos asignar roles a un usuario o grupo en un cierto alcance para el control de acceso y nuevamente podemos revocarlos eliminando una asignación de roles.
+Manuss20</a><div class="offcanvas offcanvas-bottom surface" tabindex=-1 id=offcanvasSocialShare aria-labelledby=offcanvasSocialShare><div class=offcanvas-header><h3 class=offcanvas-title>Share</h3><button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
+<i class="fas fa-times"></i></button></div><div class=offcanvas-body><a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button" target=_blank href="https://twitter.com/intent/tweet?title=Azure%20AD%20Managed%20Identity&url=https%3a%2f%2fmanuss20.com%2f2021%2f11%2f09%2fazure-ad-managed-identity%2f"><i class="fab fa-fw fa-twitter"></i> Twitter</a>
+<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmanuss20.com%2f2021%2f11%2f09%2fazure-ad-managed-identity%2f"><i class="fab fa-fw fa-facebook-f"></i> Facebook</a></div></div><button class=navbar-settings type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSettings aria-controls=offcanvasSettings aria-label="Toggle settings">
+<i class="fas fa-ellipsis-v"></i></button><div class="offcanvas offcanvas-end surface h-100" tabindex=-1 id=offcanvasSettings aria-labelledby=offcanvasSettings><div class=offcanvas-header><h3 class=offcanvas-title>Settings</h3><button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
+<i class="fas fa-times"></i></button></div><div class="offcanvas-body d-flex flex-column"><section class=setting><form class=row><div class=col-auto><label><i class="fas fa-fw fa-adjust"></i> Mode</label></div><div class="col-auto ms-auto"><div class="form-check form-switch"><input class=form-check-input type=checkbox id=modeSwitcher></div></div></form></section><section class=setting><form class="font-size-switcher-form row"><div class=col-auto><label for=fontSize class=form-label><i class="fas fa-fw fa-font"></i> Font Size</label></div><div class="col-auto ms-auto"><input type=range class=form-range min=-2 max=2 id=fontSize></div></form></section><section class="setting actions d-flex justify-content-around mt-auto overflow-auto"><a role=button class="action action-go-back" href="javascript: window.history.back();"><span class=action-icon><i class="fas fa-2x fa-arrow-left"></i></span> Go back</a>
+<a role=button class="action action-reload-page"><span class=action-icon><i class="fas fa-2x fa-redo-alt"></i></span> Reload</a>
+<a role=button class="action action-copy-url"><span class=action-icon><i class="fas fa-2x fa-link"></i></span> Copy URL
+</a><a class="action action-social-share" type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSocialShare aria-controls=offcanvasSocialShare aria-label="Toggle social share"><span class=action-icon><i class="fas fa-2x fa-share-alt"></i></span> Share</a></section></div></div><div class="collapse navbar-collapse" tabindex=-1 id=navbarSupportedContent aria-labelledby=navbarSupportedContent><form class="search-bar my-1" action=https://manuss20.com/search><div class="input-group input-group-sm"><span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+<input class="form-control rounded-pill" name=q type=search aria-label=Search></div></form><ul class="navbar-nav ms-auto"><li class=nav-item><a class=nav-link href=https://manuss20.com/about/><i class="fas fa-fw fa-file-archive"></i>About Me</a></li><li class=nav-item><a class=nav-link href=https://manuss20.com/archives/><i class="fas fa-fw fa-file-archive"></i>Archives</a></li><li class=nav-item><a class=nav-link href=https://manuss20.com/categories/><i class="fas fa-fw fa-folder"></i>Categories</a></li><li class=nav-item><a class=nav-link href=https://manuss20.com/tags/><i class="fas fa-fw fa-tags"></i>Tags</a></li></ul></div></div></nav></header><main role=main class=container><div class="row content"><div class=col-lg-8><div class=container><nav class="row card component" aria-label=breadcrumb><div class=card-body><ol class=breadcrumb><li class=breadcrumb-item><a href=https://manuss20.com/>Home</a></li><li class=breadcrumb-item><a href=https://manuss20.com/posts/>Posts</a></li><li class="breadcrumb-item active">Azure AD Managed Identity</li></ol></div></nav><div class=post-panel-wrapper><div class="d-flex flex-column component rounded post-panel"><a class="action action-panel-toggler" role=button title="Panel toggler"><i class="fas fa-fw fa-chevron-circle-down"></i></a>
+<a id=sidebarToggler class="action d-none d-lg-block" role=button title="Sidebar toggler"><i class="fas fa-fw fa-expand-alt" data-fa-transform=rotate-45></i></a></div></div><article class="row card component mb-4 post"><div class=card-header><h1 class="card-title post-title">Azure AD Managed Identity</h1></div><div class=card-body><div class=post-meta><span class=post-date title="created on 2021-11-09 00:00:00 +0000 UTC.">Nov 9, 2021
+</span><span class=post-reading-time>11 min read
+</span><span class=post-taxonomies><a href=https://manuss20.com/categories/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/categories/azure-ad/ class="badge post-taxonomy">Azure AD</a><a href=https://manuss20.com/categories/managed-identity/ class="badge post-taxonomy">Managed Identity</a><a href=https://manuss20.com/categories/identity/ class="badge post-taxonomy">Identity</a><a href=https://manuss20.com/categories/users/ class="badge post-taxonomy">Users</a><a href=https://manuss20.com/categories/groups/ class="badge post-taxonomy">Groups</a><a href=https://manuss20.com/categories/privileges/ class="badge post-taxonomy">Privileges</a><a href=https://manuss20.com/categories/cloud/ class="badge post-taxonomy">Cloud</a><a href=https://manuss20.com/tags/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/tags/azure-ad/ class="badge post-taxonomy">Azure AD</a><a href=https://manuss20.com/tags/managed-identity/ class="badge post-taxonomy">Managed Identity</a><a href=https://manuss20.com/tags/identity/ class="badge post-taxonomy">Identity</a><a href=https://manuss20.com/tags/users/ class="badge post-taxonomy">Users</a><a href=https://manuss20.com/tags/groups/ class="badge post-taxonomy">Groups</a><a href=https://manuss20.com/tags/privileges/ class="badge post-taxonomy">Privileges</a><a href=https://manuss20.com/tags/cloud/ class="badge post-taxonomy">Cloud</a></span></div><div class="post-content mb-3"><p>Hoy me gustaría hablaros un poco sobre Azure Active Directory (Azure AD) y explicaros algunos conceptos como gestionar las famosas Managed Identity, desde un perspectiva general de su uso.</p><p>##¿Qué es Azure Active Directory?
+Azure Active Directory (también conocido como Azure AD) es un servicio multi-inquilino completamente administrado de Microsoft que ofrece capacidades de identidad y acceso para aplicaciones que se ejecutan en Microsoft Azure y para aplicaciones que se ejecutan en un entorno local. Esto hace que a menudo pueda ser confundido con Active Directory para Windows Server, en realidad esto va mucho más allá de lo que ya estamos familiarizados en entornos Windows. Para resumirlo, no, Azure AD no es Active Directory ejecutándose en máquinas virtuales de Azure.</p><p>Además con Azure AD podemos lograr cosas como el inicio de sesión único (SSO) o multifactor, acceso a aplicaciones aplicaciones, consultar los permisos e información de usuarios y grupos, e incluso escribir cambios en el directorio y la mejor parte es que puede integrar Azure AD con Windows Server AD.</p><p>Azure AD es un lugar donde se crearán los usuarios y los perfiles. Por lo tanto, los usuarios o empleados de una organización iniciarán sesión con su nombre de usuario y contraseña. Y, por supuesto, a veces puede requerir autenticación multifactor. Y luego, basándonos en esa identidad, proporcionamos acceso a las aplicaciones.</p><p>##Autenticación frente a autorización
+Antes de continuar, primero me gustaría poder discernir entre dos conceptos que tienden a confundirse; la diferencia entre la autenticación y autorización. Puede que ya lo sepas. Pero de todos modos lo explicaré rápidamente.</p><p>El proceso de identificar a alguien a sí mismo se llama autenticación. Es como si vamos por la calle y nos piden que nos identifiquemos - ¡Alto, Policía!, lo que seguramente haremos es mostrar nuestro DNI, Pasaporte o licencia de conducir. Fácil ¿verdad?</p><p>Entonces, ¿qué es la autorización?</p><p>Si tomamos el ejemplo anterior. Ya hemos demostrado nuestra identidad; la siguiente pregunta inmediata es ¿qué puedo hacer o qué no puedo hacer con esa identidad en una organización o sistema en particular? ¿Estoy en el lugar correcto o me he colado?</p><p>Disponer de la autorización oportuna nos permite llegar todo lo lejos que nos permita la autoridad que otorga ese derecho. Siguiendo con nuestro ejemplo, en un concierto, ¿tenemos una entrada que nos permite acceder al recinto o disponemos de un pase VIP que nos da acceso al backstage?</p><p>En el contexto de Azure, Autorización es poder responder a la pregunta ¿Cuáles son los diferentes servicios a los que puedo acceder y a los que no tengo acceso?</p><p>##Autenticación multifactor
+Ahora hablemos un poco de la autenticación multifactor. Estoy seguro que es un término familiar que ya lo has oído antes. Cuando iniciamos sesión en un sitio web en particular, proporcionamos nuestro nombre de usuario y contraseña. Imagina que por alguna razón nuestra contraseña se filtra. Entonces alguien sin acceso autorizado y que tenga nuestra contraseña puede acceder a los datos y servicios que contiene.</p><p>Entonces, ¿cómo podemos mitigar este problema? Ahí es cuando necesitamos la autenticación multifactor (MFA). Además del nombre de usuario y la contraseña, también se debe proporcionar la identidad en forma de probablemente una OTP que obtenemos en nuestro teléfono móvil o mediante una llamada telefónica o usando una aplicación móvil instalada en donde confirmamos que somos nosotros los que estamos haciendo inicio de sesión.</p><p>La autenticación multifactor funciona al requerir dos o más de los siguientes métodos de autenticación:</p><ul><li><p>Algo que sepas, normalmente una contraseña.</p></li><li><p>Algo que tenga, como un dispositivo confiable que no se pueda duplicar fácilmente. (Por ejemplo: teléfono o llave de hardware)</p></li><li><p>Algo que eres: datos biométricos como una huella dactilar o un escaneo facial.</p></li></ul><p>##¿Qué es una identidad administrada?
+Las identidades administradas proporcionan una identidad para que las aplicaciones la usen cuando se conectan a recursos que admiten la autenticación de Azure Active Directory (Azure AD). Fundamentalmente, la gestión de credenciales es manejada por la identidad administrada (de ahí la palabra), y no por la aplicación o el desarrollador.</p><p>Dicho de otro modo, la aplicación usa la identidad administrada para obtener un token de Azure AD. Este token se puede usar para acceder a otros recursos de Azure, comúnmente Azure Key Vault o Azure Storage.</p><p>Inicio de sesión único (SSO)</p><p>La misma identidad se puede utilizar en varias aplicaciones. Y esa función se denomina inicio de sesión único. Inicia sesión una vez, y con ese inicio de sesión en particular, intenta acceder a todos los recursos.</p><p>Gestión de aplicaciones</p><p>Como mencioné antes, cuando creamos y configuramos múltiples aplicaciones para Azure AD. Estas aplicaciones solo pueden ser utilizadas por usuarios dentro de nuestra organización o, en ciertos casos, por algunos usuarios invitados pertenecientes a otra organización. Por lo tanto, podemos invitar a usuarios de otra organización. Eso significa que hay un inquilino AD más donde existe la identidad del usuario. Pero en nuestro AD, va a existir como invitado.</p><p>Una vez que el usuario invitado se agrega a nuestro Directorio Activo, junto con nuestros otros usuarios, a este usuario en particular también se le pueden otorgar permisos como cualquier otro usuario dentro de la misma organización.</p><p>Gestión de dispositivos</p><p>Ya por último, podemos proporcionar administración de dispositivos mediante Azure AD uniendo nuestros dispositivos móviles u ordenadores portátiles al inquilino de Azure. A través del inquilino, podemos controlar el dispositivo. Un ejemplo práctico es cuando pierdes tu dispositivo y luego puedes bloquear tu cuenta o más concretamente el acceso mediante ese dispositivo. Por lo tanto, en el dispositivo, nadie más puede iniciar sesión y robar tus datos.</p><p>##Agregando usuarios a Azure AD
+Tras las explicaciones previas, ahora vamos a agregar nuestro primer usuario. Para ello debemos seguir los siguientes pasos:</p><p>Inicia sesión en Azure Portal como administrador de usuarios para tu organización.</p><p>En la barra superior, busca y selecciona Azure Active Directory.</p><p>Selecciona Usuarios y, a continuación, selecciona Nuevo usuario.</p><p>En la página Usuario puedes definir la información relativa para este usuario:</p><ul><li><p>Nombre. Nombre y apellidos del nuevo usuario. Por ejemplo, Mary Poppins.</p></li><li><p>Nombre de usuario. Nombre de usuario del nuevo usuario. Por ejemplo, <a href=mailto:mary@contoso.com>mary@contoso.com</a>.
+En la parte del dominio del nombre de usuario debemos usar el nombre de dominio predeterminado inicial, .onmicrosoft.com o un nombre de dominio personalizado, como de contoso.com.</p></li><li><p>Grupos. Podemos agregar el usuario a uno o varios de los grupos existentes.</p></li><li><p>Rol del directorio. Aquí podemos definir alguno de los permisos administrativos de Azure AD para el usuario</p></li><li><p>Información del trabajo. Podemos agregar más información sobre el usuario aquí o hacerlo más adelante.</p></li><li><p>Copia la contraseña generada automáticamente proporcionada en el cuadro de texto Contraseña. Esta será la contraseña que debemos proporcionar al usuario para iniciar sesión por primera vez.</p></li></ul><p>Selecciona Crear. El usuario queda así definido y se agrega a la organización de Azure AD.</p><p>También podemos invitar a un usuario invitado nuevo a colaborar con nuestra organización si selecciona Invitar usuario en la página Nuevo usuario. El usuario recibirá una invitación por correo electrónico que debe aceptar para empezar a colaborar.</p><p>##Asignación de roles
+Lo comentaba antes pero quizá es mejor dedicarle unas líneas adicionales. En Azure es posible administrar usuarios asignándoles alguno de los diferentes roles disponibles. En Azure Active Directory (Azure AD), por ejemplo, si uno de los usuarios necesita permiso para administrar recursos de Azure AD, debemos asignarlo a un rol que proporcione los permisos que necesita.</p><p>Esta asignación de roles se realiza desde la página Roles siguiendo unos sencillos pasos:</p><ul><li>Accedemos con nuestro usuario de administrador global a Azure Portal.</li><li>En la barra superior busca y selecciona Azure Active Directory.</li><li>Selecciona Usuarios.</li><li>Ahora seleccionamos el usuario que obtiene la asignación de roles. Por ejemplo, Alain Charon.</li><li>En la página Alain Charon - Perfil, selecciona Roles asignados.</li><li>Y aquí podemos ver los roles que están asignados para este usuario. Si queremos darle roles de administrador de aplicaciones, por ejemplo, debemos seleccionar este rol y pulsamos en añadir (Add).</li></ul><p>##Creación masiva de usuarios en Azure Active Directory
+En este punto seguro que adivino si piensas que todo esto es muy bonito pero es un lento, lento, lento proceso que no puedes asumir si tenemos que ir usuario a usuario. Y tienes toda la razón.</p><p>Azure Active Directory (Azure AD) admite operaciones de creación y eliminación de usuarios en lotes y la descarga de listas de usuarios. Solo necesitamos rellenar una plantilla .CSV que se puede descargar en el portal de Azure AD.</p><p>##Grupos de usuarios
+Un grupo Azure AD permite organizar a los usuarios, facilitando la gestión de los permisos. Los grupos permiten al propietario del recurso (o al propietario de Azure AD-Directory) asignar un conjunto de permisos de acceso a todos los miembros del grupo.</p><p>Los grupos permiten definir una política y luego añadir y eliminar usuarios específicos. De este modo, se puede conceder o denegar el acceso con un esfuerzo mínimo.</p><p>Aún mejor, Azure AD ofrece la posibilidad de definir la afiliación en función de reglas, como el departamento en el que trabaja un usuario o el cargo que ocupa.</p><p>En Azure AD podemos definir dos tipos diferentes de grupos:</p><ul><li>Grupos de seguridad. Son los grupos de seguridad más comunes y se utilizan para gestionar el acceso de los miembros y de los ordenadores a los recursos compartidos por un grupo de usuarios. Por ejemplo, puede crear un grupo de seguridad para una política de seguridad específica. De esta manera, puede dar un conjunto de permisos a todos los miembros a la vez en lugar de añadir permisos individualmente para cada miembro. Esta opción requiere un administrador de Azure AD.</li><li>Grupos de Microsoft 365. Estos grupos ofrecen oportunidades de colaboración al dar a los miembros acceso a una bandeja de entrada, un calendario y archivos compartidos, SharePoint y más. Esta opción también le permite dar acceso al grupo a personas ajenas a su organización. Esta opción está disponible tanto para los usuarios como para los administradores.</li></ul><p>##Grupos dinámico en Azure AD
+En Azure Active Directory (Azure AD), también podemos usar reglas para determinar la pertenencia a grupos según las propiedades de usuario o dispositivo. La pertenencia dinámica es compatible con grupos de seguridad o grupos de Microsoft 365. Cuando se aplica una regla de pertenencia a grupos, se evalúan los atributos de usuario y dispositivo para ver si coinciden con la regla de pertenencia. Cuando cambian los atributos de un usuario o dispositivo, se procesan todos los cambios de pertenencia de las reglas de grupo dinámico de la organización.</p><p>##Control de acceso basado en rol de Azure (RBAC)
+En términos de computación en la nube, el control de acceso juega un papel vital para administrar los permisos de manera efectiva. Azure RBAC es un sistema de autorización basado en Azure Resource Manager que proporciona administración de acceso específico a los recursos de Azure. La administración de acceso de los recursos en la nube es una función importantísima para cualquier organización. Azure RBAC ayuda a administrar quién tiene acceso a los recursos de Azure, qué pueden hacer con esos recursos y a qué áreas puede acceder.</p><p>##Algunos escenarios para Azure Access Control (Azure RBAC)</p><ul><li>Otorgar acceso a diferentes recursos de Azure con uno o varios roles. Ejemplo: permitir que un usuario administre la aplicación de Azure y el servicio SQL de Azure. Podemos dar Contributor, Reader, owner, Manage role, Monitor reader/contributor, website contributor etc.</li><li>Del mismo modo, otorgar acceso a nivel de suscripción. Ejemplo: permitir que un usuario cree solo una máquina virtual en una suscripción específica. O permita que el usuario cree el servicio de aplicaciones de Azure, así como servicios lógicos (múltiples) con rol de contribución, lectura o propietario.</li><li>Dar diferentes accesos a diferentes ámbitos como grupo de administración, suscripciones, grupo de recursos o recursos.</li><li>Otorgar acceso a una aplicación para acceder a los recursos también.</li><li>Podemos hacer de muchas a muchas relaciones entre roles, ámbitos y usuarios o grupo (principal de seguridad).</li></ul><p>Hay tres componentes principales que se deben comprender para el control de acceso basado en roles de Azure: entidad de seguridad (quién), rol (qué) y alcance (dónde).</p><p>El director de seguridad básicamente representa quién obtendrá el acceso, como usuarios, grupo, director de servicio e identidad administrada. (Quien es)</p><p>Ámbito es el conjunto de recursos al que se aplica el acceso. Cuando se asigna un rol, es posible limitar aún más las acciones permitidas si se define un ámbito. Esto resulta útil si desea convertir a alguien en Colaborador del sitio web, pero solo para un grupo de recursos.</p><p>En Azure, puede especificar un ámbito en cuatro niveles: grupo de administración, suscripción, grupo de recursos o recurso. Los ámbitos se estructuran en una relación de elementos primarios y secundarios. Puede asignar roles en cualquiera de estos niveles de ámbito.</p><p>Diagrama que muestra los niveles de ámbito de una asignación de roles.</p><p>Las relaciones entre el principio de seguridad, la definición de rol y el alcance son una especie de muchos a muchos.</p><p>Podemos asignar roles a un usuario o grupo en un cierto alcance para el control de acceso y nuevamente podemos revocarlos eliminando una asignación de roles.
 Podemos asignar el mismo rol a múltiples usuarios, grupos o identidad administrada en recursos iguales o diferentes (alcance).
 Podemos asignar roles utilizando Azure Portal, Azure SDK, Azure CLI, Azure PowerShell o API REST.
-La forma más fácil de manejar el control de acceso basado en roles es mediante el Portal de Azure.</p>
-<p>Encontraremos una pestaña común en todos los recursos de Azure que es Control de acceso (IAM) como se muestra, y a partir de aquí podemos realizar nuestra asignación a medida.</p>
-</div></div>
-<div class=card-footer><div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
-<i class="fas fa-fw fa-chevron-left"></i>
-<a href=https://manuss20.com/2021/07/30/deploy-azure-digital-twins-con-terraform/>Deploy Azure Digital Twins Con Terraform
-</a>
-</div><div class="post-nav post-next">
-<a href=https://manuss20.com/2021/11/15/deploy-azure-maps-con-terraform/>Deploy Azure Maps Con Terraform
-</a>
-<i class="fas fa-fw fa-chevron-right"></i>
-</div></div></div>
-</article><section class="related-posts row card component">
-<div class=card-header>
-<h2 class=card-title>Related Posts</h2>
-</div>
-<div class=card-body>
-<ul class=post-list><li>
-<a href=https://manuss20.com/2020/02/11/azure-keyvault-docker/>Azure KeyVault + Docker
-</a>
-<span class="float-end post-date">Feb 11, 2020
-</span>
-</li><li>
-<a href=https://manuss20.com/2019/11/22/monitorizaci%C3%B3n-de-aplicaciones-en-azure/>Monitorización De Aplicaciones en Azure
-</a>
-<span class="float-end post-date">Nov 22, 2019
-</span>
-</li><li>
-<a href=https://manuss20.com/2019/06/15/eventos-global-devops-bootcamp/>[Eventos] Global DevOps Bootcamp
-</a>
-<span class="float-end post-date">Jun 15, 2019
-</span>
-</li><li>
-<a href=https://manuss20.com/2019/06/01/azure-digital-twins/>Azure Digital Twins
-</a>
-<span class="float-end post-date">Jun 1, 2019
-</span>
-</li><li>
-<a href=https://manuss20.com/2019/05/07/azure-arm-templates/>Azure ARM Templates
-</a>
-<span class="float-end post-date">May 7, 2019
-</span>
-</li></ul>
-</div>
-</section></div>
-</div><aside class="col-lg-4 sidebar d-flex">
-<div class="container d-flex flex-column">
-<section class="card row text-center profile component">
-<div class=card-body>
-<div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Manuel Sanchez" src=https://manuss20.com/images/profile.jpg loading=lazy width=400 height=400>
-</div>
-<div class="col-12 profile-meta"><div class=profile-name>Manuel Sanchez</div><div class=profile-bio>Technical Manager & Azure Evangelist at NTT DATA EMEAL| Microsoft Azure MVP | Founder and Organizer @netcoreconf & @CAT_zure</div><div class=profile-company><i class="fas fa-fw fa-building"></i>NTT DATA</div><div class=profile-location><i class="fas fa-fw fa-map-marker-alt"></i>Madrid, Spain</div><div class=profile-about><i class="fas fa-fw fa-user"></i><a href=https://manuss20.com/about/>About Me</a></div></div>
-</div>
-</section>
-<section class="recent-posts row card component">
-<div class=card-header>
-<h2 class=card-title>Recent Posts</h2>
-</div>
-<div class=card-body>
-<ul class=post-list><li>
-<a href=https://manuss20.com/2021/11/15/deploy-azure-maps-con-terraform/>Deploy Azure Maps Con Terraform
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/11/09/azure-ad-managed-identity/>Azure AD Managed Identity
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/07/30/deploy-azure-digital-twins-con-terraform/>Deploy Azure Digital Twins Con Terraform
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/>Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster
-</a>
-</li></ul>
-</div>
-</section><section class="categories-taxonomies row card component">
-<div class=card-header>
-<h2 class=card-title>
-<a href=https://manuss20.com/categories>Categories</a>
-</h2>
-</div>
-<div class=card-body>
-<div class=py-2><a href=https://manuss20.com/categories/azure/ class="badge rounded post-taxonomy" title=Azure>
-Azure</a><a href=https://manuss20.com/categories/cloud/ class="badge rounded post-taxonomy" title=Cloud>
+La forma más fácil de manejar el control de acceso basado en roles es mediante el Portal de Azure.</p><p>Encontraremos una pestaña común en todos los recursos de Azure que es Control de acceso (IAM) como se muestra, y a partir de aquí podemos realizar nuestra asignación a medida.</p></div></div><div class=card-footer><div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+<a href=https://manuss20.com/2021/07/30/deploy-azure-digital-twins-con-terraform/>Deploy Azure Digital Twins Con Terraform</a></div><div class="post-nav post-next"><a href=https://manuss20.com/2021/11/15/deploy-azure-maps-con-terraform/>Deploy Azure Maps Con Terraform</a>
+<i class="fas fa-fw fa-chevron-right"></i></div></div></div></article><section class="related-posts row card component"><div class=card-header><h2 class=card-title>Related Posts</h2></div><div class=card-body><ul class=post-list><li><a href=https://manuss20.com/2020/02/11/azure-keyvault--docker/>Azure KeyVault + Docker</a>
+<span class="float-end post-date">Feb 11, 2020</span></li><li><a href=https://manuss20.com/2019/11/22/monitorizaci%C3%B3n-de-aplicaciones-en-azure/>Monitorización De Aplicaciones en Azure</a>
+<span class="float-end post-date">Nov 22, 2019</span></li><li><a href=https://manuss20.com/2019/06/15/eventos-global-devops-bootcamp/>[Eventos] Global DevOps Bootcamp</a>
+<span class="float-end post-date">Jun 15, 2019</span></li><li><a href=https://manuss20.com/2019/06/01/azure-digital-twins/>Azure Digital Twins</a>
+<span class="float-end post-date">Jun 1, 2019</span></li><li><a href=https://manuss20.com/2019/05/07/azure-arm-templates/>Azure ARM Templates</a>
+<span class="float-end post-date">May 7, 2019</span></li></ul></div></section></div></div><aside class="col-lg-4 sidebar d-flex"><div class="container d-flex flex-column"><section class="card row text-center profile component"><div class=card-body><div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Manuel Sanchez" src=https://manuss20.com/images/profile.jpg loading=lazy width=400 height=400></div><div class="col-12 profile-meta"><div class=profile-name>Manuel Sanchez</div><div class=profile-bio>Technical Manager & Azure Evangelist at NTT DATA EMEAL| Microsoft Azure MVP | Founder and Organizer @netcoreconf & @CAT_zure</div><div class=profile-company><i class="fas fa-fw fa-building"></i>NTT DATA</div><div class=profile-location><i class="fas fa-fw fa-map-marker-alt"></i>Madrid, Spain</div><div class=profile-about><i class="fas fa-fw fa-user"></i><a href=https://manuss20.com/about/>About Me</a></div></div></div></section><section class="recent-posts row card component"><div class=card-header><h2 class=card-title>Recent Posts</h2></div><div class=card-body><ul class=post-list><li><a href=https://manuss20.com/2021/11/15/deploy-azure-maps-con-terraform/>Deploy Azure Maps Con Terraform</a></li><li><a href=https://manuss20.com/2021/11/09/azure-ad-managed-identity/>Azure AD Managed Identity</a></li><li><a href=https://manuss20.com/2021/07/30/deploy-azure-digital-twins-con-terraform/>Deploy Azure Digital Twins Con Terraform</a></li><li><a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON</a></li><li><a href=https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/>Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster</a></li></ul></div></section><section class="categories-taxonomies row card component"><div class=card-header><h2 class=card-title><a href=https://manuss20.com/categories>Categories</a></h2></div><div class=card-body><div class=py-2><a href=https://manuss20.com/categories/azure/ class="badge rounded post-taxonomy" title=Azure>Azure</a><a href=https://manuss20.com/categories/cloud/ class="badge rounded post-taxonomy" title=Cloud>
 Cloud</a><a href=https://manuss20.com/categories/community/ class="badge rounded post-taxonomy" title=Community>
 Community</a><a href=https://manuss20.com/categories/events/ class="badge rounded post-taxonomy" title=Events>
 Events</a><a href=https://manuss20.com/categories/networking/ class="badge rounded post-taxonomy" title=Networking>
@@ -359,17 +47,7 @@ IoT</a><a href=https://manuss20.com/categories/terraform/ class="badge rounded p
 Terraform</a><a href=https://manuss20.com/categories/docker/ class="badge rounded post-taxonomy" title=Docker>
 Docker</a><a href=https://manuss20.com/categories/saas/ class="badge rounded post-taxonomy" title=SaaS>
 SaaS</a><a href=https://manuss20.com/categories/templates/ class="badge rounded post-taxonomy" title=Templates>
-Templates</a></div>
-</div>
-</section><section class="tags-taxonomies row card component">
-<div class=card-header>
-<h2 class=card-title>
-<a href=https://manuss20.com/tags>Tags</a>
-</h2>
-</div>
-<div class=card-body>
-<div class=py-2><a href=https://manuss20.com/tags/azure/ class="badge rounded post-taxonomy" title=Azure>
-Azure</a><a href=https://manuss20.com/tags/cloud/ class="badge rounded post-taxonomy" title=Cloud>
+Templates</a></div></div></section><section class="tags-taxonomies row card component"><div class=card-header><h2 class=card-title><a href=https://manuss20.com/tags>Tags</a></h2></div><div class=card-body><div class=py-2><a href=https://manuss20.com/tags/azure/ class="badge rounded post-taxonomy" title=Azure>Azure</a><a href=https://manuss20.com/tags/cloud/ class="badge rounded post-taxonomy" title=Cloud>
 Cloud</a><a href=https://manuss20.com/tags/community/ class="badge rounded post-taxonomy" title=Community>
 Community</a><a href=https://manuss20.com/tags/event/ class="badge rounded post-taxonomy" title=Event>
 Event</a><a href=https://manuss20.com/tags/networking/ class="badge rounded post-taxonomy" title=Networking>
@@ -383,32 +61,11 @@ IoT</a><a href=https://manuss20.com/tags/terraform/ class="badge rounded post-ta
 Terraform</a><a href=https://manuss20.com/tags/docker/ class="badge rounded post-taxonomy" title=Docker>
 Docker</a><a href=https://manuss20.com/tags/saas/ class="badge rounded post-taxonomy" title=SaaS>
 SaaS</a><a href=https://manuss20.com/tags/templates/ class="badge rounded post-taxonomy" title=Templates>
-Templates</a></div>
-</div>
-</section>
-</div>
-</aside>
-</div>
-</main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"><a class="nav-link social-link" target=_blank href=https://github.com/manuss20 title=GitHub rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-github"></i>
-</a><a class="nav-link social-link" target=_blank href=https://linkedin.com/manuelsanchezrodriguez title=LinkedIn rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-linkedin-in"></i>
-</a><a class="nav-link social-link" target=_blank href=https://medium.com/@manuss20 title=Medium rel="noopener noreferrer">
-<i class="fab fa-fw fa-2x fa-medium-m"></i>
-</a><a class="nav-link social-link" target=_blank href=https://stackoverflow.com/users/manuss20 title="Stack Overflow" rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-stack-overflow"></i>
-</a><a class="nav-link social-link" target=_blank href=https://twitter.com/manuss20 title=Twitter rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-twitter"></i>
-</a><a class="nav-link social-link" target=_blank href=https://www.youtube.com/channel/manuss20 title=Youtube rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-youtube"></i>
-</a></nav>
-<div class="copyright mb-2">
-Copyright © 2022 Manuel Sánchez. All Rights Reserved.
-</div>
-<div class="powered-by mb-2">
-Powered by <a href=https://gohugo.io target=_blank rel="noopener noreferrer">Hugo</a> and the <a href=https://github.com/razonyang/hugo-theme-bootstrap target=_blank rel="noopener noreferrer">Bootstrap</a> theme.
-</div></footer>
-<script src=https://manuss20.com/js/main.2cdce25f280f570596c88888d6af930fe5e15ea030005291dad293defbb231d3.js integrity="sha256-LNziXygPVwWWyIiI1q+TD+XhXqAwAFKR2tKT3vuyMdM=" crossorigin=anonymous defer></script><script src=https://manuss20.com/js/icons.min.8ddcaafc364ff0296c2209c5495287f0de039b852da9b24847f94c198b7639b6.js integrity="sha256-jdyq/DZP8ClsIgnFSVKH8N4Dm4UtqbJIR/lMGYt2ObY=" crossorigin=anonymous defer></script>
-<script src=https://manuss20.com/js/viewer.min.652118a9fbf3403cdfde4026209f97ace22f9e334f0b45a33431a221b3db46a8.js integrity="sha256-ZSEYqfvzQDzf3kAmIJ+XrOIvnjNPC0WjNDGiIbPbRqg=" crossorigin=anonymous defer></script>
-</body>
-</html>
+Templates</a></div></div></section></div></aside></div></main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"><a class="nav-link social-link" target=_blank href=https://github.com/manuss20 title=GitHub rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-github"></i>
+</a><a class="nav-link social-link" target=_blank href=https://linkedin.com/manuelsanchezrodriguez title=LinkedIn rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-linkedin-in"></i>
+</a><a class="nav-link social-link" target=_blank href=https://mastodon.social/@https://hachyderm.io/@msanchez title=Mastodon rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-mastodon"></i>
+</a><a class="nav-link social-link" target=_blank href=https://medium.com/@manuss20 title=Medium rel="noopener noreferrer"><i class="fab fa-fw fa-2x fa-medium-m"></i>
+</a><a class="nav-link social-link" target=_blank href=https://stackoverflow.com/users/manuss20 title="Stack Overflow" rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-stack-overflow"></i>
+</a><a class="nav-link social-link" target=_blank href=https://twitter.com/manuss20 title=Twitter rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-twitter"></i>
+</a><a class="nav-link social-link" target=_blank href=https://www.youtube.com/channel/manuss20 title=Youtube rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-youtube"></i></a></nav><div class="copyright mb-2">Copyright © 2022 Manuel Sánchez. All Rights Reserved.</div><div class="powered-by mb-2">Powered by <a href=https://gohugo.io target=_blank rel="noopener noreferrer">Hugo</a> and the <a href=https://github.com/razonyang/hugo-theme-bootstrap target=_blank rel="noopener noreferrer">Bootstrap</a> theme.</div></footer><script src=https://manuss20.com/js/main.2cdce25f280f570596c88888d6af930fe5e15ea030005291dad293defbb231d3.js integrity="sha256-LNziXygPVwWWyIiI1q+TD+XhXqAwAFKR2tKT3vuyMdM=" crossorigin=anonymous defer></script><script src=https://manuss20.com/js/icons.min.51c35406c902d10a8c727cd65bc98c32b447950c5cde90210eb346a8fa006756.js integrity="sha256-UcNUBskC0QqMcnzWW8mMMrRHlQxc3pAhDrNGqPoAZ1Y=" crossorigin=anonymous defer></script>
+<script src=https://manuss20.com/js/viewer.min.a8208be3aa935702a4db52cc84efb041977103ab64919b01a6117fc574b0628f.js integrity="sha256-qCCL46qTVwKk21LMhO+wQZdxA6tkkZsBphF/xXSwYo8=" crossorigin=anonymous defer></script></body></html>

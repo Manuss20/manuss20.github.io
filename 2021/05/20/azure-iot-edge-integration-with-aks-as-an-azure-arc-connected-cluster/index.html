@@ -1,451 +1,65 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster | Manuss20 Blog</title><link rel=apple-touch-icon href=https://manuss20.com/images/icons/icon-180x180.png sizes=180x180>
-<link rel=icon href=https://manuss20.com/images/icons/icon-32x32.png sizes=32x32 type=image/png>
-<link rel=icon href=https://manuss20.com/images/icons/icon-16x16.png sizes=16x16 type=image/png>
-<link rel=icon href=https://manuss20.com/images/icons/favicon.ico>
-<link rel=manifest href=https://manuss20.com/manifest.json>
-<meta name=keywords content>
-<meta name=description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta itemprop=name content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster">
-<meta itemprop=description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta itemprop=datePublished content="2021-05-20T00:00:00+00:00">
-<meta itemprop=dateModified content="2021-05-20T00:00:00+00:00">
-<meta itemprop=wordCount content="1207"><meta itemprop=image content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png">
-<meta itemprop=keywords content="Azure,Azure-Arc,Arc,Hybrid,IoT,Kubernetes,AKS,Jumpstart,"><meta property="og:title" content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster">
-<meta property="og:description" content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/"><meta property="og:image" content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-05-20T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-05-20T00:00:00+00:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png">
-<meta name=twitter:title content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster">
-<meta name=twitter:description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion.">
-<meta name=twitter:site content="@manuss20">
-<link rel=stylesheet href=https://manuss20.com/css/main.min.507afbe6e4670fa3e961a0b35816b5daeb36029866fd6bd7b9d7871fcf88faa5.css integrity="sha256-UHr75uRnD6PpYaCzWBa12us2Aphm/WvXudeHH8+I+qU=" crossorigin=anonymous><link rel=stylesheet href=https://manuss20.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css integrity="sha256-PSKHlLztu/oEEr64+8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin=anonymous></head>
-<body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
-<div class=container>
-<button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster | Manuss20 Blog</title><link rel=apple-touch-icon href=https://manuss20.com/images/icons/icon-180x180.png sizes=180x180><link rel=icon href=https://manuss20.com/images/icons/icon-32x32.png sizes=32x32 type=image/png><link rel=icon href=https://manuss20.com/images/icons/icon-16x16.png sizes=16x16 type=image/png><link rel=icon href=https://manuss20.com/images/icons/favicon.ico><link rel=manifest href=https://manuss20.com/manifest.json><meta name=keywords content><meta name=description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta itemprop=name content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster"><meta itemprop=description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta itemprop=datePublished content="2021-05-20T00:00:00+00:00"><meta itemprop=dateModified content="2021-05-20T00:00:00+00:00"><meta itemprop=wordCount content="1217"><meta itemprop=image content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png"><meta itemprop=keywords content="Azure,Azure-Arc,Arc,Hybrid,IoT,Kubernetes,AKS,Jumpstart,"><meta property="og:title" content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster"><meta property="og:description" content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta property="og:type" content="article"><meta property="og:url" content="https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/"><meta property="og:image" content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-05-20T00:00:00+00:00"><meta property="article:modified_time" content="2021-05-20T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://manuss20.com/images/posts/azure_arc_jumpstart_logo.png"><meta name=twitter:title content="Azure IoT Edge integration with AKS as an Azure Arc Connected Cluster"><meta name=twitter:description content="If you do not yet have a Kubernetes cluster, the scenarios in this section will guide you on using AKS as an Azure Arc-enabled Kubernetes cluster and simulate Azure IoT Edge environment in an automated fashion."><meta name=twitter:site content="@manuss20"><link rel=stylesheet href=https://manuss20.com/css/main.min.24196952817c68c8b90d8fa573d560fa62766baa0622bdc0e862255f4a4d1307.css integrity="sha256-JBlpUoF8aMi5DY+lc9Vg+mJ2a6oGIr3A6GIlX0pNEwc=" crossorigin=anonymous><link rel=stylesheet href=https://manuss20.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css integrity="sha256-PSKHlLztu/oEEr64+8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin=anonymous></head><body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top"><div class=container><button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
 <i class="fas fa-bars"></i>
 </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href=https://manuss20.com><img class=logo alt=Logo src=https://manuss20.com/images/logo.png loading=lazy width=100 height=88>
-Manuss20
-</a>
-<div class="offcanvas offcanvas-bottom surface" tabindex=-1 id=offcanvasSocialShare aria-labelledby=offcanvasSocialShare>
-<div class=offcanvas-header>
-<h3 class=offcanvas-title>Share</h3>
-<button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
-<i class="fas fa-times"></i>
-</button>
-</div>
-<div class=offcanvas-body>
-<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button" target=_blank href="https://twitter.com/intent/tweet?title=Azure%20IoT%20Edge%20integration%20with%20AKS%20as%20an%20Azure%20Arc%20Connected%20Cluster&url=https%3a%2f%2fmanuss20.com%2f2021%2f05%2f20%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f">
-<i class="fab fa-fw fa-twitter"></i> Twitter
-</a>
-<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmanuss20.com%2f2021%2f05%2f20%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f">
-<i class="fab fa-fw fa-facebook-f"></i> Facebook
-</a>
-</div>
-</div>
-<button class=navbar-settings type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSettings aria-controls=offcanvasSettings aria-label="Toggle settings">
-<i class="fas fa-ellipsis-v"></i>
-</button>
-<div class="offcanvas offcanvas-end surface h-100" tabindex=-1 id=offcanvasSettings aria-labelledby=offcanvasSettings>
-<div class=offcanvas-header>
-<h3 class=offcanvas-title>Settings</h3>
-<button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
-<i class="fas fa-times"></i>
-</button>
-</div>
-<div class="offcanvas-body d-flex flex-column">
-<section class=setting>
-<form class=row>
-<div class=col-auto>
-<label><i class="fas fa-fw fa-adjust"></i> Mode</label>
-</div>
-<div class="col-auto ms-auto">
-<div class="form-check form-switch">
-<input class=form-check-input type=checkbox id=modeSwitcher>
-</div>
-</div>
-</form>
-</section>
-<section class=setting>
-<form class="font-size-switcher-form row">
-<div class=col-auto>
-<label for=fontSize class=form-label><i class="fas fa-fw fa-font"></i> Font Size</label>
-</div>
-<div class="col-auto ms-auto">
-<input type=range class=form-range min=-2 max=2 id=fontSize>
-</div>
-</form>
-</section>
-<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
-<a role=button class="action action-go-back" href="javascript: window.history.back();">
-<span class=action-icon><i class="fas fa-2x fa-arrow-left"></i></span> Go back
-</a>
-<a role=button class="action action-reload-page">
-<span class=action-icon><i class="fas fa-2x fa-redo-alt"></i></span> Reload
-</a>
-<a role=button class="action action-copy-url">
-<span class=action-icon><i class="fas fa-2x fa-link"></i></span> Copy URL
-</a><a class="action action-social-share" type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSocialShare aria-controls=offcanvasSocialShare aria-label="Toggle social share">
-<span class=action-icon><i class="fas fa-2x fa-share-alt"></i></span> Share
-</a></section>
-</div>
-</div>
-<div class="collapse navbar-collapse" tabindex=-1 id=navbarSupportedContent aria-labelledby=navbarSupportedContent>
-<form class="search-bar my-1" action=https://manuss20.com/search>
-<div class="input-group input-group-sm">
-<span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
-<input class="form-control rounded-pill" name=q type=search aria-label=Search>
-</div>
-</form>
-<ul class="navbar-nav ms-auto"><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/about/>
-<i class="fas fa-fw fa-file-archive"></i>About Me
-</a>
-</li><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/archives/>
-<i class="fas fa-fw fa-file-archive"></i>Archives
-</a>
-</li><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/categories/>
-<i class="fas fa-fw fa-folder"></i>Categories
-</a>
-</li><li class=nav-item>
-<a class=nav-link href=https://manuss20.com/tags/>
-<i class="fas fa-fw fa-tags"></i>Tags
-</a>
-</li></ul>
-</div>
-</div>
-</nav>
-</header>
-<main role=main class=container>
-<div class="row content">
-<div class=col-lg-8>
-<div class=container><nav class="row card component" aria-label=breadcrumb>
-<div class=card-body>
-<ol class=breadcrumb><li class=breadcrumb-item><a href=https://manuss20.com/>Home</a></li><li class=breadcrumb-item><a href=https://manuss20.com/posts/>Posts</a></li><li class="breadcrumb-item active">Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster</li></ol>
-</div>
-</nav><div class=post-panel-wrapper>
-<div class="d-flex flex-column component rounded post-panel">
-<a class="action action-panel-toggler" role=button title="Panel toggler">
-<i class="fas fa-fw fa-chevron-circle-down"></i>
-</a>
-<a id=sidebarToggler class="action d-none d-lg-block" role=button title="Sidebar toggler">
-<i class="fas fa-fw fa-expand-alt" data-fa-transform=rotate-45></i>
-</a>
-<a class=action href=#postTOC aria-controls="Table of contents" role=button title="Table of contents">
-<i class="fas fa-fw fa-list-alt"></i>
-</a>
-</div>
-</div>
-<article class="row card component mb-4 post">
-<div class=card-header>
-<h1 class="card-title post-title">Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster
-</h1>
-</div>
-<div class=card-body><div class=post-meta>
-<span class=post-date title="created on 2021-05-20 00:00:00 +0000 UTC.">
-May 20, 2021
-</span><span class=post-reading-time>
-6 min read
-</span><span class=post-taxonomies><a href=https://manuss20.com/categories/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/categories/azure-arc/ class="badge post-taxonomy">Azure-Arc</a><a href=https://manuss20.com/categories/arc/ class="badge post-taxonomy">Arc</a><a href=https://manuss20.com/categories/hybrid/ class="badge post-taxonomy">Hybrid</a><a href=https://manuss20.com/categories/iot/ class="badge post-taxonomy">IoT</a><a href=https://manuss20.com/categories/kubernetes/ class="badge post-taxonomy">Kubernetes</a><a href=https://manuss20.com/categories/aks/ class="badge post-taxonomy">AKS</a><a href=https://manuss20.com/categories/jumpstart/ class="badge post-taxonomy">Jumpstart</a><a href=https://manuss20.com/tags/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/tags/azure-arc/ class="badge post-taxonomy">Azure-Arc</a><a href=https://manuss20.com/tags/arc/ class="badge post-taxonomy">Arc</a><a href=https://manuss20.com/tags/hybrid/ class="badge post-taxonomy">Hybrid</a><a href=https://manuss20.com/tags/iot/ class="badge post-taxonomy">IoT</a><a href=https://manuss20.com/tags/kubernetes/ class="badge post-taxonomy">Kubernetes</a><a href=https://manuss20.com/tags/aks/ class="badge post-taxonomy">AKS</a><a href=https://manuss20.com/tags/jumpstart/ class="badge post-taxonomy">Jumpstart</a></span>
-</div>
-<div class="post-content mb-3"><blockquote>
-<p><strong>This scenario was published in <a href=https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/iot_uses_cases/aks/ target=_blank rel="noopener noreferrer">Azure Arc JumpStart</a></strong></p>
-</blockquote>
-<h2 id=deploy-aks-cluster-on-azure-iot-edge-and-connect-it-to-azure-arc-using-terraform>Deploy AKS cluster on Azure IoT Edge and connect it to Azure Arc using Terraform<a class="anchor ms-1" href=#deploy-aks-cluster-on-azure-iot-edge-and-connect-it-to-azure-arc-using-terraform><i class="fas fa-link"></i></a></h2>
-<p>This scenario allows us to see how Azure IoT Edge and Azure Arc services complement each other in an easy and simple way, providing mechanisms for AKS cluster operators to configure the fundamental components of an AKS cluster and apply policies by monitoring its supervision, through Azure Arc. Furthermore, from Azure IoT Edge, application operators can remotely deploy and manage workloads at scale with convenient ingest from the cloud and in a bi-directional way.</p>
-<blockquote>
-<p><strong>Note: Azure Kubernetes Service is now in preview on Azure IoT Edge. You can find more details about this service in the <a href=https://microsoft.github.io/iotedge-k8s-doc/ target=_blank rel="noopener noreferrer">IoT Edge&rsquo;s support for Kubernetes document</a></strong></p>
-</blockquote>
-<p>The following README will guide you on how to use the provided <a href=https://www.terraform.io/ target=_blank rel="noopener noreferrer">Terraform</a> plan to deploy an <a href=https://docs.microsoft.com/en-us/azure/aks/intro-kubernetes target=_blank rel="noopener noreferrer">Azure Kubernetes Service (AKS)</a> cluster and connect it as an Azure Arc-enabled Kubernetes resource.</p>
-<h2 id=prerequisites>Prerequisites<a class="anchor ms-1" href=#prerequisites><i class="fas fa-link"></i></a></h2>
-<ul>
-<li>
-<p>Clone the Azure Arc Jumpstart repository</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>git clone https://github.com/microsoft/azure_arc.git
-</code></pre></div></li>
-<li>
-<p><a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest" target=_blank rel="noopener noreferrer">Install or update Azure CLI to version 2.25.0 and above</a>. Use the below command to check your current installed version.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az --version
-</code></pre></div></li>
-<li>
-<p><a href=https://learn.hashicorp.com/terraform/getting-started/install.html target=_blank rel="noopener noreferrer">Install Terraform >=0.15</a></p>
-</li>
-<li>
-<p>Create Azure service principal (SP)</p>
-<p>To be able to complete the scenario and its related automation, Azure service principal assigned with the “Contributor” role is required. To create it, login to your Azure account run the below command (this can also be done in <a href=https://shell.azure.com/ target=_blank rel="noopener noreferrer">Azure Cloud Shell</a>).</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az login
-<span class=ln>2</span>az ad sp create-for-rbac -n <span class=s2>&#34;&lt;Unique SP Name&gt;&#34;</span> --role contributor
-</code></pre></div><p>For example:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az ad sp create-for-rbac -n <span class=s2>&#34;http://AzureArcK8s&#34;</span> --role contributor
-</code></pre></div><p>Output should look like this:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=ln>1</span><span class=p>{</span>
-<span class=ln>2</span><span class=nt>&#34;appId&#34;</span><span class=p>:</span> <span class=s2>&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span><span class=p>,</span>
-<span class=ln>3</span><span class=nt>&#34;displayName&#34;</span><span class=p>:</span> <span class=s2>&#34;AzureArcK8s&#34;</span><span class=p>,</span>
-<span class=ln>4</span><span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;http://AzureArcK8s&#34;</span><span class=p>,</span>
-<span class=ln>5</span><span class=nt>&#34;password&#34;</span><span class=p>:</span> <span class=s2>&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span><span class=p>,</span>
-<span class=ln>6</span><span class=nt>&#34;tenant&#34;</span><span class=p>:</span> <span class=s2>&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span>
-<span class=ln>7</span><span class=p>}</span>
-</code></pre></div><blockquote>
-<p><strong>Note: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific <a href="https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest" target=_blank rel="noopener noreferrer">Azure subscription and resource group</a> as well considering using a <a href=https://docs.microsoft.com/en-us/azure/role-based-access-control/best-practices target=_blank rel="noopener noreferrer">less privileged service principal account</a></strong></p>
-</blockquote>
-</li>
-<li>
-<p><a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider target=_blank rel="noopener noreferrer">Enable subscription with</a> the two resource providers for Azure Arc-enabled Kubernetes. Registration is an asynchronous process, and registration may take approximately 10 minutes.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az provider register --namespace Microsoft.Kubernetes
-<span class=ln>2</span>az provider register --namespace Microsoft.KubernetesConfiguration
-<span class=ln>3</span>az extension add --name connectedk8s
-<span class=ln>4</span>az extension add --name k8sconfiguration
-</code></pre></div><p>You can monitor the registration process with the following commands:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az provider show -n Microsoft.Kubernetes -o table
-<span class=ln>2</span>az provider show -n Microsoft.KubernetesConfiguration -o table
-</code></pre></div></li>
-</ul>
-<h2 id=automation-flow>Automation Flow<a class="anchor ms-1" href=#automation-flow><i class="fas fa-link"></i></a></h2>
-<p>For you to get familiar with the automation and deployment flow, below is an explanation.</p>
-<ul>
-<li>
-<p>First bash script [<em>edge_azure_vm.sh</em>]((<a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/edge/edge_azure_vm.sh target=_blank rel="noopener noreferrer">https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/edge/edge_azure_vm.sh</a>) - Used specifically for provisioning the necessary components in the VM to be able to deploy our &ldquo;simulated&rdquo; edge device:</p>
-<ul>
-<li>Download Install the required tools <em>moby-engine</em></li>
-<li>Download & install the Azure <em>aziot-edge</em></li>
-<li>Creation of a new configuration file for aziot-edge (<em>/etc/aziot/config.toml</em>)</li>
-</ul>
-</li>
-<li>
-<p>Second bash script <a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/helm/az_k8sconfig_helm_aks.sh target=_blank rel="noopener noreferrer"><em>az_k8sconfig_helm_aks.sh</em></a> Allow us to deploy our IoT Edge solution for AKS, configure our and associate our AKS cluster with Azure Arc, for this:</p>
-<ul>
-<li>Log in to Azure with Service Principal & Getting AKS credentials (kubeconfig)</li>
-<li>Associate our AKS with Azure Arc</li>
-<li>Create Namespace <em>iotedge</em> in AKS</li>
-<li>Generate a secret that contains the connection string of our edge device.</li>
-<li>Create Cluster-level GitOps-Config for deploying IoT Edge workload</li>
-</ul>
-</li>
-</ul>
-<h2 id=deployment>Deployment<a class="anchor ms-1" href=#deployment><i class="fas fa-link"></i></a></h2>
-<p>Before running the Terraform automation, you need to export the environment variables that will be used by the plan to customize your environment.</p>
-<p>In addition, validate that the AKS Kubernetes version is available in your region using the below Azure CLI command.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az aks get-versions -l <span class=s2>&#34;&lt;Your Azure Region&gt;&#34;</span>
-</code></pre></div><p>In case the AKS service is not available in your region, you can change the AKS Kubernetes version in the <a href=https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aks/terraform/variables.tf target=_blank rel="noopener noreferrer"><em>variables.tf</em></a> file by searching for <em>kubernetes_version</em>.</p>
-<ul>
-<li>
-<p>Export the environment variables needed for the Terraform plan.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span><span class=nb>export</span> <span class=nv>TF_VAR_client_id</span><span class=o>=</span>&lt;Your Azure service principal App ID&gt;
-<span class=ln>2</span><span class=nb>export</span> <span class=nv>TF_VAR_client_secret</span><span class=o>=</span>&lt;Your Azure service principal App Password&gt;
-</code></pre></div><blockquote>
-<p><strong>Note: If you are running in a PowerShell environment, to set the Terraform environment variables, use the <em>Set-Item -Path env:</em> prefix (see example below)</strong></p>
-</blockquote>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-powershell data-lang=powershell><span class=ln>1</span><span class=nb>Set-Item</span> <span class=n>-Path</span> <span class=n>env</span><span class=err>:</span><span class=n>TF_VAR_client_id</span>
-</code></pre></div></li>
-<li>
-<p>Run the <code>terraform init</code> command which will download the Terraform AzureRM provider.</p>
-<p><img class=img-fluid alt="Screenshot showing terraform init being run" src=https://manuss20.com/images/posts/Arc_IoT_AKS_01.png loading=lazy width=2187 height=785>
-</p>
-</li>
-<li>
-<p>Run the ```terraform apply -auto-approve`` command and wait for the plan to finish.</p>
-<p>Once the Terraform deployment is completed, a new Resource Group and all services (Vnet, Subnets, VMs, IoT Hub, EventHub, AKS Cluster) are created.</p>
-<p><img class=img-fluid alt="Screenshot showing terraform plan completing" src=https://manuss20.com/images/posts/Arc_IoT_AKS_02.png loading=lazy width=864 height=238>
-</p>
-<p><img class=img-fluid alt="Screenshot showing Azure Portal with AKS resource" src=https://manuss20.com/images/posts/Arc_IoT_AKS_03.png loading=lazy width=1597 height=784>
-</p>
-<p><img class=img-fluid alt="Screenshot showing Azure Portal with AKS resource" src=https://manuss20.com/images/posts/Arc_IoT_AKS_04.png loading=lazy width=2868 height=1346>
-</p>
-</li>
-<li>
-<p>In this scenario we will use a VM to &ldquo;simulate&rdquo; an IoT Edge device. To do this, we must register a new Edge device in our IoT Hub that we will later configure.</p>
-</li>
-<li>
-<p>In order to keep your local environment clean and untouched, we will use <a href=https://docs.microsoft.com/en-us/azure/cloud-shell/overview target=_blank rel="noopener noreferrer">Azure Cloud Shell</a> (located in the top-right corner in the Azure portal) to run the next commands:</p>
-<p><img class=img-fluid alt="Screenshot showing how to access Cloud Shell in Visual Studio Code" src=https://manuss20.com/images/posts/Arc_IoT_AKS_05.png loading=lazy width=720 height=296>
-</p>
-</li>
-<li>
-<p>Create IoT Edge Device</p>
-</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az iot hub device-identity create --device-id <span class=s2>&#34;EdgeDeviceSim&#34;</span> --edge-enabled --hub-name k8sedgejumpstart
-</code></pre></div><blockquote>
-<ul>
-<li>We will obtain the connection string of the new IoT Edge device to be able to make the link</li>
-</ul>
-</blockquote>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az iot hub device-identity connection-string show --device-id <span class=s2>&#34;EdgeDeviceSim&#34;</span> --hub-name k8sedgejumpstart
-</code></pre></div><p><img class=img-fluid alt="Screenshot showing how to access Cloud Shell in Visual Studio Code" src=https://manuss20.com/images/posts/Arc_IoT_AKS_06.png loading=lazy width=2878 height=1378>
-</p>
-<p><img class=img-fluid alt="Screenshot showing how to access Cloud Shell in Visual Studio Code" src=https://manuss20.com/images/posts/Arc_IoT_AKS_07.png loading=lazy width=2870 height=186>
-</p>
-<ul>
-<li>Next, log into the deployment VM using your SSH credentials and edit the <em>/etc/aziot/config.toml</em> by replacing the connection string using the one we obtained in the previous step.</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span><span class=c1># Manual provisioning with connection string</span>
-<span class=ln>2</span><span class=o>[</span>provisioning<span class=o>]</span>
-<span class=ln>3</span><span class=nb>source</span> <span class=o>=</span> <span class=s2>&#34;manual&#34;</span>
-<span class=ln>4</span><span class=nv>connection_string</span> <span class=o>=</span> <span class=s2>&#34;&lt;ADD DEVICE CONNECTION STRING HERE&gt;&#34;</span>
-</code></pre></div><ul>
-<li>In order to synchronize the configuration of the device that we have paired we must execute the following command:</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>sudo iotedge config apply
-</code></pre></div><p><img class=img-fluid alt="Screenshot showing sync config IoT Edge device in VM" src=https://manuss20.com/images/posts/Arc_IoT_AKS_08.png loading=lazy width=2130 height=556>
-</p>
-<ul>
-<li>Once completed the above steps, return to the Azure Cloud Shell where we will assign to our new device a module to simulate a temperature sensor. For this we will upload the file through the Azure Cloud Shell interface:</li>
-</ul>
-<p><img class=img-fluid alt="Screenshot showing sync config IoT Edge device in VM" src=https://manuss20.com/images/posts/Arc_IoT_AKS_09.png loading=lazy width=896 height=596>
-</p>
-<ul>
-<li>Once the file is uploaded, execute the following command:</li>
-</ul>
-<blockquote>
-<p><strong>Note: You can see an example of the <a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/edge/deployment.json target=_blank rel="noopener noreferrer">deployment.json</a> file that we use.</strong></p>
-</blockquote>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>az iot edge set-modules --hub-name k8sedgejumpstart --device-id <span class=s2>&#34;EdgeDeviceSim&#34;</span> --content ./deployment.json
-</code></pre></div><ul>
-<li>From the Azure portal, select the IoT Hub instance under <em>K8sEdgeJumpStart</em>. By selecting our IoT Edge device, we can see all the information about the modules it is running and If everything has been successful we will see that the &ldquo;SimulatedTemperatureSensor&rdquo; module is running correctly.</li>
-</ul>
-<p><img class=img-fluid alt="Screenshot showing IoT Edge device in IoT Hub" src=https://manuss20.com/images/posts/Arc_IoT_AKS_10.png loading=lazy width=1918 height=935>
-</p>
-<p><img class=img-fluid alt="Screenshot showing IoT Edge device in IoT Hub" src=https://manuss20.com/images/posts/Arc_IoT_AKS_11.png loading=lazy width=1912 height=769>
-</p>
-<ul>
-<li>We can also check from the virtual machine itself the modules that are running at that moment, using the following command:</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>sudo iotedge list
-</code></pre></div><p><img class=img-fluid alt="Screenshot showing IoT Edge modules running in the device" src=https://manuss20.com/images/posts/Arc_IoT_AKS_12.png loading=lazy width=1994 height=184>
-</p>
-<ul>
-<li>Now download the <a href=https://github.com/Azure/iotedge/blob/preview/iiot/kubernetes/charts/edge-kubernetes/values.yaml target=_blank rel="noopener noreferrer">values.yaml</a> file for IoT Edge Helm chart and replace the deviceConnectionString placeholder at the end of the file with the connection string you noted earlier.</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=ln>1</span><span class=c># Manual provisioning configuration using a connection string</span><span class=w>
-</span><span class=ln>2</span><span class=w></span><span class=nt>provisioning</span><span class=p>:</span><span class=w>
-</span><span class=ln>3</span><span class=w>  </span><span class=nt>source</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;manual&#34;</span><span class=w>
-</span><span class=ln>4</span><span class=w>  </span><span class=nt>deviceConnectionString</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;&lt;ADD DEVICE CONNECTION STRING HERE&gt;&#34;</span><span class=w>
-</span><span class=ln>5</span><span class=w>  </span><span class=nt>dynamicReprovisioning</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w>
-</span></code></pre></div><ul>
-<li>Edit the environment variables section in the included in the <a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/helm/az_k8sconfig_helm_aks.sh target=_blank rel="noopener noreferrer"><em>az_k8sconfig_helm_aks.sh</em></a> shell script. As we did in the previous steps, upload the files to our Azure Cloud Shell.</li>
-</ul>
-<p><img class=img-fluid alt="Screenshot environment variables section" src=https://manuss20.com/images/posts/Arc_IoT_AKS_13.png loading=lazy width=914 height=155>
-</p>
-<ul>
-<li>Once the script run has finished, the AKS cluster will be projected as a new Azure Arc-enabled Kubernetes resource. We will proceed to connect to our AKS cluster and in a couple of minutes you should see the workload modules defined in the edge deployment running as pods along with edgeagent and iotedged.
-We can use the following commands to check it:</li>
-</ul>
-<p><img class=img-fluid alt="Screenshot environment variables section" src=https://manuss20.com/images/posts/Arc_IoT_AKS_16.png loading=lazy width=1920 height=920>
-</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=ln>1</span>kubectl get pods -n iotedge
-<span class=ln>2</span>kubectl logs -n iotedge &lt;replace-with-iot-edge-pod-name&gt; simulatedtemperaturesensor
-</code></pre></div><h2 id=delete-the-deployment>Delete the deployment<a class="anchor ms-1" href=#delete-the-deployment><i class="fas fa-link"></i></a></h2>
-<p>The most straightforward way is to delete the Azure Arc-enabled Kubernetes resource via the Azure Portal, just select the Resource Group and delete it.</p>
-<p><img class=img-fluid alt="Screenshot showing delete function in Azure Portal" src=https://manuss20.com/images/posts/Arc_IoT_AKS_14.png loading=lazy width=1604 height=875>
-</p>
-<p>If you want to nuke the entire environment, delete both the AKS and the AKS resources resource groups or run the <code>terraform destroy -auto-approve</code> command.</p>
-<p><img class=img-fluid alt="Screenshot showing terraform destroy being run" src=https://manuss20.com/images/posts/Arc_IoT_AKS_15.png loading=lazy width=1202 height=60>
-</p>
-<p>Saludos!</p>
-</div></div>
-<div class=card-footer><div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
-<i class="fas fa-fw fa-chevron-left"></i>
-<a href=https://manuss20.com/2020/03/14/dapr/>DAPR
-</a>
-</div><div class="post-nav post-next">
-<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
-</a>
-<i class="fas fa-fw fa-chevron-right"></i>
-</div></div></div>
-</article><section class="related-posts row card component">
-<div class=card-header>
-<h2 class=card-title>Related Posts</h2>
-</div>
-<div class=card-body>
-<ul class=post-list><li>
-<a href=https://manuss20.com/2019/06/01/azure-digital-twins/>Azure Digital Twins
-</a>
-<span class="float-end post-date">Jun 1, 2019
-</span>
-</li><li>
-<a href=https://manuss20.com/2020/03/14/dapr/>DAPR
-</a>
-<span class="float-end post-date">Mar 14, 2020
-</span>
-</li><li>
-<a href=https://manuss20.com/2020/02/11/azure-keyvault-docker/>Azure KeyVault + Docker
-</a>
-<span class="float-end post-date">Feb 11, 2020
-</span>
-</li><li>
-<a href=https://manuss20.com/2020/01/20/eventos-netcoreconf-barcelona-2020/>[Eventos] Netcoreconf Barcelona 2020
-</a>
-<span class="float-end post-date">Jan 20, 2020
-</span>
-</li><li>
-<a href=https://manuss20.com/2019/11/22/monitorizaci%C3%B3n-de-aplicaciones-en-azure/>Monitorización De Aplicaciones en Azure
-</a>
-<span class="float-end post-date">Nov 22, 2019
-</span>
-</li></ul>
-</div>
-</section></div>
-</div><aside class="col-lg-4 sidebar d-flex">
-<div class="container d-flex flex-column">
-<section class="card row text-center profile component">
-<div class=card-body>
-<div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Manuel Sanchez" src=https://manuss20.com/images/profile.jpg loading=lazy width=400 height=400>
-</div>
-<div class="col-12 profile-meta"><div class=profile-name>Manuel Sanchez</div><div class=profile-bio>Technical Manager & Azure Evangelist at NTT DATA EMEAL| Microsoft Azure MVP | Founder and Organizer @netcoreconf & @CAT_zure</div><div class=profile-company><i class="fas fa-fw fa-building"></i>NTT DATA</div><div class=profile-location><i class="fas fa-fw fa-map-marker-alt"></i>Madrid, Spain</div><div class=profile-about><i class="fas fa-fw fa-user"></i><a href=https://manuss20.com/about/>About Me</a></div></div>
-</div>
-</section>
-<div class="post-toc row mb-4 card component" id=postTOC>
-<div class=card-header>
-<h2 class=card-title>Contents</h2>
-</div>
-<div class=card-body>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#deploy-aks-cluster-on-azure-iot-edge-and-connect-it-to-azure-arc-using-terraform>Deploy AKS cluster on Azure IoT Edge and connect it to Azure Arc using Terraform</a></li>
-<li><a href=#prerequisites>Prerequisites</a></li>
-<li><a href=#automation-flow>Automation Flow</a></li>
-<li><a href=#deployment>Deployment</a></li>
-<li><a href=#delete-the-deployment>Delete the deployment</a></li>
-</ul>
-</nav>
-</div>
-</div><section class="recent-posts row card component">
-<div class=card-header>
-<h2 class=card-title>Recent Posts</h2>
-</div>
-<div class=card-body>
-<ul class=post-list><li>
-<a href=https://manuss20.com/2021/11/15/deploy-azure-maps-con-terraform/>Deploy Azure Maps Con Terraform
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/11/09/azure-ad-managed-identity/>Azure AD Managed Identity
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/07/30/deploy-azure-digital-twins-con-terraform/>Deploy Azure Digital Twins Con Terraform
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON
-</a>
-</li><li>
-<a href=https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/>Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster
-</a>
-</li></ul>
-</div>
-</section><section class="categories-taxonomies row card component">
-<div class=card-header>
-<h2 class=card-title>
-<a href=https://manuss20.com/categories>Categories</a>
-</h2>
-</div>
-<div class=card-body>
-<div class=py-2><a href=https://manuss20.com/categories/azure/ class="badge rounded post-taxonomy" title=Azure>
-Azure</a><a href=https://manuss20.com/categories/cloud/ class="badge rounded post-taxonomy" title=Cloud>
+Manuss20</a><div class="offcanvas offcanvas-bottom surface" tabindex=-1 id=offcanvasSocialShare aria-labelledby=offcanvasSocialShare><div class=offcanvas-header><h3 class=offcanvas-title>Share</h3><button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
+<i class="fas fa-times"></i></button></div><div class=offcanvas-body><a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button" target=_blank href="https://twitter.com/intent/tweet?title=Azure%20IoT%20Edge%20integration%20with%20AKS%20as%20an%20Azure%20Arc%20Connected%20Cluster&url=https%3a%2f%2fmanuss20.com%2f2021%2f05%2f20%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f"><i class="fab fa-fw fa-twitter"></i> Twitter</a>
+<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmanuss20.com%2f2021%2f05%2f20%2fazure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster%2f"><i class="fab fa-fw fa-facebook-f"></i> Facebook</a></div></div><button class=navbar-settings type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSettings aria-controls=offcanvasSettings aria-label="Toggle settings">
+<i class="fas fa-ellipsis-v"></i></button><div class="offcanvas offcanvas-end surface h-100" tabindex=-1 id=offcanvasSettings aria-labelledby=offcanvasSettings><div class=offcanvas-header><h3 class=offcanvas-title>Settings</h3><button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
+<i class="fas fa-times"></i></button></div><div class="offcanvas-body d-flex flex-column"><section class=setting><form class=row><div class=col-auto><label><i class="fas fa-fw fa-adjust"></i> Mode</label></div><div class="col-auto ms-auto"><div class="form-check form-switch"><input class=form-check-input type=checkbox id=modeSwitcher></div></div></form></section><section class=setting><form class="font-size-switcher-form row"><div class=col-auto><label for=fontSize class=form-label><i class="fas fa-fw fa-font"></i> Font Size</label></div><div class="col-auto ms-auto"><input type=range class=form-range min=-2 max=2 id=fontSize></div></form></section><section class="setting actions d-flex justify-content-around mt-auto overflow-auto"><a role=button class="action action-go-back" href="javascript: window.history.back();"><span class=action-icon><i class="fas fa-2x fa-arrow-left"></i></span> Go back</a>
+<a role=button class="action action-reload-page"><span class=action-icon><i class="fas fa-2x fa-redo-alt"></i></span> Reload</a>
+<a role=button class="action action-copy-url"><span class=action-icon><i class="fas fa-2x fa-link"></i></span> Copy URL
+</a><a class="action action-social-share" type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSocialShare aria-controls=offcanvasSocialShare aria-label="Toggle social share"><span class=action-icon><i class="fas fa-2x fa-share-alt"></i></span> Share</a></section></div></div><div class="collapse navbar-collapse" tabindex=-1 id=navbarSupportedContent aria-labelledby=navbarSupportedContent><form class="search-bar my-1" action=https://manuss20.com/search><div class="input-group input-group-sm"><span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+<input class="form-control rounded-pill" name=q type=search aria-label=Search></div></form><ul class="navbar-nav ms-auto"><li class=nav-item><a class=nav-link href=https://manuss20.com/about/><i class="fas fa-fw fa-file-archive"></i>About Me</a></li><li class=nav-item><a class=nav-link href=https://manuss20.com/archives/><i class="fas fa-fw fa-file-archive"></i>Archives</a></li><li class=nav-item><a class=nav-link href=https://manuss20.com/categories/><i class="fas fa-fw fa-folder"></i>Categories</a></li><li class=nav-item><a class=nav-link href=https://manuss20.com/tags/><i class="fas fa-fw fa-tags"></i>Tags</a></li></ul></div></div></nav></header><main role=main class=container><div class="row content"><div class=col-lg-8><div class=container><nav class="row card component" aria-label=breadcrumb><div class=card-body><ol class=breadcrumb><li class=breadcrumb-item><a href=https://manuss20.com/>Home</a></li><li class=breadcrumb-item><a href=https://manuss20.com/posts/>Posts</a></li><li class="breadcrumb-item active">Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster</li></ol></div></nav><div class=post-panel-wrapper><div class="d-flex flex-column component rounded post-panel"><a class="action action-panel-toggler" role=button title="Panel toggler"><i class="fas fa-fw fa-chevron-circle-down"></i></a>
+<a id=sidebarToggler class="action d-none d-lg-block" role=button title="Sidebar toggler"><i class="fas fa-fw fa-expand-alt" data-fa-transform=rotate-45></i></a>
+<a class=action href=#postTOC aria-controls="Table of contents" role=button title="Table of contents"><i class="fas fa-fw fa-list-alt"></i></a></div></div><article class="row card component mb-4 post"><div class=card-header><h1 class="card-title post-title">Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster</h1></div><div class=card-body><div class=post-meta><span class=post-date title="created on 2021-05-20 00:00:00 +0000 UTC.">May 20, 2021
+</span><span class=post-reading-time>6 min read
+</span><span class=post-taxonomies><a href=https://manuss20.com/categories/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/categories/azure-arc/ class="badge post-taxonomy">Azure-Arc</a><a href=https://manuss20.com/categories/arc/ class="badge post-taxonomy">Arc</a><a href=https://manuss20.com/categories/hybrid/ class="badge post-taxonomy">Hybrid</a><a href=https://manuss20.com/categories/iot/ class="badge post-taxonomy">IoT</a><a href=https://manuss20.com/categories/kubernetes/ class="badge post-taxonomy">Kubernetes</a><a href=https://manuss20.com/categories/aks/ class="badge post-taxonomy">AKS</a><a href=https://manuss20.com/categories/jumpstart/ class="badge post-taxonomy">Jumpstart</a><a href=https://manuss20.com/tags/azure/ class="badge post-taxonomy">Azure</a><a href=https://manuss20.com/tags/azure-arc/ class="badge post-taxonomy">Azure-Arc</a><a href=https://manuss20.com/tags/arc/ class="badge post-taxonomy">Arc</a><a href=https://manuss20.com/tags/hybrid/ class="badge post-taxonomy">Hybrid</a><a href=https://manuss20.com/tags/iot/ class="badge post-taxonomy">IoT</a><a href=https://manuss20.com/tags/kubernetes/ class="badge post-taxonomy">Kubernetes</a><a href=https://manuss20.com/tags/aks/ class="badge post-taxonomy">AKS</a><a href=https://manuss20.com/tags/jumpstart/ class="badge post-taxonomy">Jumpstart</a></span></div><div class="post-content mb-3"><blockquote><p><strong>This scenario was published in <a href=https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/iot_uses_cases/aks/ target=_blank rel="noopener noreferrer">Azure Arc JumpStart</a></strong></p></blockquote><h2 id=deploy-aks-cluster-on-azure-iot-edge-and-connect-it-to-azure-arc-using-terraform>Deploy AKS cluster on Azure IoT Edge and connect it to Azure Arc using Terraform<a class="anchor ms-1" href=#deploy-aks-cluster-on-azure-iot-edge-and-connect-it-to-azure-arc-using-terraform><i class="fas fa-link"></i></a></h2><p>This scenario allows us to see how Azure IoT Edge and Azure Arc services complement each other in an easy and simple way, providing mechanisms for AKS cluster operators to configure the fundamental components of an AKS cluster and apply policies by monitoring its supervision, through Azure Arc. Furthermore, from Azure IoT Edge, application operators can remotely deploy and manage workloads at scale with convenient ingest from the cloud and in a bi-directional way.</p><blockquote><p><strong>Note: Azure Kubernetes Service is now in preview on Azure IoT Edge. You can find more details about this service in the <a href=https://microsoft.github.io/iotedge-k8s-doc/ target=_blank rel="noopener noreferrer">IoT Edge&rsquo;s support for Kubernetes document</a></strong></p></blockquote><p>The following README will guide you on how to use the provided <a href=https://www.terraform.io/ target=_blank rel="noopener noreferrer">Terraform</a> plan to deploy an <a href=https://docs.microsoft.com/en-us/azure/aks/intro-kubernetes target=_blank rel="noopener noreferrer">Azure Kubernetes Service (AKS)</a> cluster and connect it as an Azure Arc-enabled Kubernetes resource.</p><h2 id=prerequisites>Prerequisites<a class="anchor ms-1" href=#prerequisites><i class="fas fa-link"></i></a></h2><ul><li><p>Clone the Azure Arc Jumpstart repository</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>git clone https://github.com/microsoft/azure_arc.git
+</span></span></code></pre></div></li><li><p><a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest" target=_blank rel="noopener noreferrer">Install or update Azure CLI to version 2.25.0 and above</a>. Use the below command to check your current installed version.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az --version
+</span></span></code></pre></div></li><li><p><a href=https://learn.hashicorp.com/terraform/getting-started/install.html target=_blank rel="noopener noreferrer">Install Terraform >=0.15</a></p></li><li><p>Create Azure service principal (SP)</p><p>To be able to complete the scenario and its related automation, Azure service principal assigned with the “Contributor” role is required. To create it, login to your Azure account run the below command (this can also be done in <a href=https://shell.azure.com/ target=_blank rel="noopener noreferrer">Azure Cloud Shell</a>).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az login
+</span></span><span class=line><span class=ln>2</span><span class=cl>az ad sp create-for-rbac -n <span class=s2>&#34;&lt;Unique SP Name&gt;&#34;</span> --role contributor
+</span></span></code></pre></div><p>For example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az ad sp create-for-rbac -n <span class=s2>&#34;http://AzureArcK8s&#34;</span> --role contributor
+</span></span></code></pre></div><p>Output should look like this:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=ln>1</span><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=nt>&#34;appId&#34;</span><span class=p>:</span> <span class=s2>&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=nt>&#34;displayName&#34;</span><span class=p>:</span> <span class=s2>&#34;AzureArcK8s&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;http://AzureArcK8s&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl><span class=nt>&#34;password&#34;</span><span class=p>:</span> <span class=s2>&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl><span class=nt>&#34;tenant&#34;</span><span class=p>:</span> <span class=s2>&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><blockquote><p><strong>Note: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific <a href="https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest" target=_blank rel="noopener noreferrer">Azure subscription and resource group</a> as well considering using a <a href=https://docs.microsoft.com/en-us/azure/role-based-access-control/best-practices target=_blank rel="noopener noreferrer">less privileged service principal account</a></strong></p></blockquote></li><li><p><a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider target=_blank rel="noopener noreferrer">Enable subscription with</a> the two resource providers for Azure Arc-enabled Kubernetes. Registration is an asynchronous process, and registration may take approximately 10 minutes.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az provider register --namespace Microsoft.Kubernetes
+</span></span><span class=line><span class=ln>2</span><span class=cl>az provider register --namespace Microsoft.KubernetesConfiguration
+</span></span><span class=line><span class=ln>3</span><span class=cl>az extension add --name connectedk8s
+</span></span><span class=line><span class=ln>4</span><span class=cl>az extension add --name k8sconfiguration
+</span></span></code></pre></div><p>You can monitor the registration process with the following commands:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az provider show -n Microsoft.Kubernetes -o table
+</span></span><span class=line><span class=ln>2</span><span class=cl>az provider show -n Microsoft.KubernetesConfiguration -o table
+</span></span></code></pre></div></li></ul><h2 id=automation-flow>Automation Flow<a class="anchor ms-1" href=#automation-flow><i class="fas fa-link"></i></a></h2><p>For you to get familiar with the automation and deployment flow, below is an explanation.</p><ul><li><p>First bash script [<em>edge_azure_vm.sh</em>]((<a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/edge/edge_azure_vm.sh target=_blank rel="noopener noreferrer">https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/edge/edge_azure_vm.sh</a>) - Used specifically for provisioning the necessary components in the VM to be able to deploy our &ldquo;simulated&rdquo; edge device:</p><ul><li>Download Install the required tools <em>moby-engine</em></li><li>Download & install the Azure <em>aziot-edge</em></li><li>Creation of a new configuration file for aziot-edge (<em>/etc/aziot/config.toml</em>)</li></ul></li><li><p>Second bash script <a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/helm/az_k8sconfig_helm_aks.sh target=_blank rel="noopener noreferrer"><em>az_k8sconfig_helm_aks.sh</em></a> Allow us to deploy our IoT Edge solution for AKS, configure our and associate our AKS cluster with Azure Arc, for this:</p><ul><li>Log in to Azure with Service Principal & Getting AKS credentials (kubeconfig)</li><li>Associate our AKS with Azure Arc</li><li>Create Namespace <em>iotedge</em> in AKS</li><li>Generate a secret that contains the connection string of our edge device.</li><li>Create Cluster-level GitOps-Config for deploying IoT Edge workload</li></ul></li></ul><h2 id=deployment>Deployment<a class="anchor ms-1" href=#deployment><i class="fas fa-link"></i></a></h2><p>Before running the Terraform automation, you need to export the environment variables that will be used by the plan to customize your environment.</p><p>In addition, validate that the AKS Kubernetes version is available in your region using the below Azure CLI command.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az aks get-versions -l <span class=s2>&#34;&lt;Your Azure Region&gt;&#34;</span>
+</span></span></code></pre></div><p>In case the AKS service is not available in your region, you can change the AKS Kubernetes version in the <a href=https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aks/terraform/variables.tf target=_blank rel="noopener noreferrer"><em>variables.tf</em></a> file by searching for <em>kubernetes_version</em>.</p><ul><li><p>Export the environment variables needed for the Terraform plan.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl><span class=nb>export</span> <span class=nv>TF_VAR_client_id</span><span class=o>=</span>&lt;Your Azure service principal App ID&gt;
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=nb>export</span> <span class=nv>TF_VAR_client_secret</span><span class=o>=</span>&lt;Your Azure service principal App Password&gt;
+</span></span></code></pre></div><blockquote><p><strong>Note: If you are running in a PowerShell environment, to set the Terraform environment variables, use the <em>Set-Item -Path env:</em> prefix (see example below)</strong></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-powershell data-lang=powershell><span class=line><span class=ln>1</span><span class=cl><span class=nb>Set-Item</span> <span class=n>-Path</span> <span class=n>env</span><span class=err>:</span><span class=n>TF_VAR_client_id</span>
+</span></span></code></pre></div></li><li><p>Run the <code>terraform init</code> command which will download the Terraform AzureRM provider.</p><p><img class=img-fluid alt="Screenshot showing terraform init being run" src=https://manuss20.com/images/posts/Arc_IoT_AKS_01.png loading=lazy width=2187 height=785></p></li><li><p>Run the ```terraform apply -auto-approve`` command and wait for the plan to finish.</p><p>Once the Terraform deployment is completed, a new Resource Group and all services (Vnet, Subnets, VMs, IoT Hub, EventHub, AKS Cluster) are created.</p><p><img class=img-fluid alt="Screenshot showing terraform plan completing" src=https://manuss20.com/images/posts/Arc_IoT_AKS_02.png loading=lazy width=864 height=238></p><p><img class=img-fluid alt="Screenshot showing Azure Portal with AKS resource" src=https://manuss20.com/images/posts/Arc_IoT_AKS_03.png loading=lazy width=1597 height=784></p><p><img class=img-fluid alt="Screenshot showing Azure Portal with AKS resource" src=https://manuss20.com/images/posts/Arc_IoT_AKS_04.png loading=lazy width=2868 height=1346></p></li><li><p>In this scenario we will use a VM to &ldquo;simulate&rdquo; an IoT Edge device. To do this, we must register a new Edge device in our IoT Hub that we will later configure.</p></li><li><p>In order to keep your local environment clean and untouched, we will use <a href=https://docs.microsoft.com/en-us/azure/cloud-shell/overview target=_blank rel="noopener noreferrer">Azure Cloud Shell</a> (located in the top-right corner in the Azure portal) to run the next commands:</p><p><img class=img-fluid alt="Screenshot showing how to access Cloud Shell in Visual Studio Code" src=https://manuss20.com/images/posts/Arc_IoT_AKS_05.png loading=lazy width=720 height=296></p></li><li><p>Create IoT Edge Device</p></li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az iot hub device-identity create --device-id <span class=s2>&#34;EdgeDeviceSim&#34;</span> --edge-enabled --hub-name k8sedgejumpstart
+</span></span></code></pre></div><blockquote><ul><li>We will obtain the connection string of the new IoT Edge device to be able to make the link</li></ul></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az iot hub device-identity connection-string show --device-id <span class=s2>&#34;EdgeDeviceSim&#34;</span> --hub-name k8sedgejumpstart
+</span></span></code></pre></div><p><img class=img-fluid alt="Screenshot showing how to access Cloud Shell in Visual Studio Code" src=https://manuss20.com/images/posts/Arc_IoT_AKS_06.png loading=lazy width=2878 height=1378></p><p><img class=img-fluid alt="Screenshot showing how to access Cloud Shell in Visual Studio Code" src=https://manuss20.com/images/posts/Arc_IoT_AKS_07.png loading=lazy width=2870 height=186></p><ul><li>Next, log into the deployment VM using your SSH credentials and edit the <em>/etc/aziot/config.toml</em> by replacing the connection string using the one we obtained in the previous step.</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl><span class=c1># Manual provisioning with connection string</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=o>[</span>provisioning<span class=o>]</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=nb>source</span> <span class=o>=</span> <span class=s2>&#34;manual&#34;</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=nv>connection_string</span> <span class=o>=</span> <span class=s2>&#34;&lt;ADD DEVICE CONNECTION STRING HERE&gt;&#34;</span>
+</span></span></code></pre></div><ul><li>In order to synchronize the configuration of the device that we have paired we must execute the following command:</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>sudo iotedge config apply
+</span></span></code></pre></div><p><img class=img-fluid alt="Screenshot showing sync config IoT Edge device in VM" src=https://manuss20.com/images/posts/Arc_IoT_AKS_08.png loading=lazy width=2130 height=556></p><ul><li>Once completed the above steps, return to the Azure Cloud Shell where we will assign to our new device a module to simulate a temperature sensor. For this we will upload the file through the Azure Cloud Shell interface:</li></ul><p><img class=img-fluid alt="Screenshot showing sync config IoT Edge device in VM" src=https://manuss20.com/images/posts/Arc_IoT_AKS_09.png loading=lazy width=896 height=596></p><ul><li>Once the file is uploaded, execute the following command:</li></ul><blockquote><p><strong>Note: You can see an example of the <a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/edge/deployment.json target=_blank rel="noopener noreferrer">deployment.json</a> file that we use.</strong></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>az iot edge set-modules --hub-name k8sedgejumpstart --device-id <span class=s2>&#34;EdgeDeviceSim&#34;</span> --content ./deployment.json
+</span></span></code></pre></div><ul><li>From the Azure portal, select the IoT Hub instance under <em>K8sEdgeJumpStart</em>. By selecting our IoT Edge device, we can see all the information about the modules it is running and If everything has been successful we will see that the &ldquo;SimulatedTemperatureSensor&rdquo; module is running correctly.</li></ul><p><img class=img-fluid alt="Screenshot showing IoT Edge device in IoT Hub" src=https://manuss20.com/images/posts/Arc_IoT_AKS_10.png loading=lazy width=1918 height=935></p><p><img class=img-fluid alt="Screenshot showing IoT Edge device in IoT Hub" src=https://manuss20.com/images/posts/Arc_IoT_AKS_11.png loading=lazy width=1912 height=769></p><ul><li>We can also check from the virtual machine itself the modules that are running at that moment, using the following command:</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>sudo iotedge list
+</span></span></code></pre></div><p><img class=img-fluid alt="Screenshot showing IoT Edge modules running in the device" src=https://manuss20.com/images/posts/Arc_IoT_AKS_12.png loading=lazy width=1994 height=184></p><ul><li>Now download the <a href=https://github.com/Azure/iotedge/blob/preview/iiot/kubernetes/charts/edge-kubernetes/values.yaml target=_blank rel="noopener noreferrer">values.yaml</a> file for IoT Edge Helm chart and replace the deviceConnectionString placeholder at the end of the file with the connection string you noted earlier.</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln>1</span><span class=cl><span class=c># Manual provisioning configuration using a connection string</span><span class=w>
+</span></span></span><span class=line><span class=ln>2</span><span class=cl><span class=w></span><span class=nt>provisioning</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>3</span><span class=cl><span class=w>  </span><span class=nt>source</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;manual&#34;</span><span class=w>
+</span></span></span><span class=line><span class=ln>4</span><span class=cl><span class=w>  </span><span class=nt>deviceConnectionString</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;&lt;ADD DEVICE CONNECTION STRING HERE&gt;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=ln>5</span><span class=cl><span class=w>  </span><span class=nt>dynamicReprovisioning</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w>
+</span></span></span></code></pre></div><ul><li>Edit the environment variables section in the included in the <a href=https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks_iot_edge/terraform/scripts/helm/az_k8sconfig_helm_aks.sh target=_blank rel="noopener noreferrer"><em>az_k8sconfig_helm_aks.sh</em></a> shell script. As we did in the previous steps, upload the files to our Azure Cloud Shell.</li></ul><p><img class=img-fluid alt="Screenshot environment variables section" src=https://manuss20.com/images/posts/Arc_IoT_AKS_13.png loading=lazy width=914 height=155></p><ul><li>Once the script run has finished, the AKS cluster will be projected as a new Azure Arc-enabled Kubernetes resource. We will proceed to connect to our AKS cluster and in a couple of minutes you should see the workload modules defined in the edge deployment running as pods along with edgeagent and iotedged.
+We can use the following commands to check it:</li></ul><p><img class=img-fluid alt="Screenshot environment variables section" src=https://manuss20.com/images/posts/Arc_IoT_AKS_16.png loading=lazy width=1920 height=920></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=ln>1</span><span class=cl>kubectl get pods -n iotedge
+</span></span><span class=line><span class=ln>2</span><span class=cl>kubectl logs -n iotedge &lt;replace-with-iot-edge-pod-name&gt; simulatedtemperaturesensor
+</span></span></code></pre></div><h2 id=delete-the-deployment>Delete the deployment<a class="anchor ms-1" href=#delete-the-deployment><i class="fas fa-link"></i></a></h2><p>The most straightforward way is to delete the Azure Arc-enabled Kubernetes resource via the Azure Portal, just select the Resource Group and delete it.</p><p><img class=img-fluid alt="Screenshot showing delete function in Azure Portal" src=https://manuss20.com/images/posts/Arc_IoT_AKS_14.png loading=lazy width=1604 height=875></p><p>If you want to nuke the entire environment, delete both the AKS and the AKS resources resource groups or run the <code>terraform destroy -auto-approve</code> command.</p><p><img class=img-fluid alt="Screenshot showing terraform destroy being run" src=https://manuss20.com/images/posts/Arc_IoT_AKS_15.png loading=lazy width=1202 height=60></p><p>Saludos!</p></div></div><div class=card-footer><div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+<a href=https://manuss20.com/2020/03/14/dapr/>DAPR</a></div><div class="post-nav post-next"><a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON</a>
+<i class="fas fa-fw fa-chevron-right"></i></div></div></div></article><section class="related-posts row card component"><div class=card-header><h2 class=card-title>Related Posts</h2></div><div class=card-body><ul class=post-list><li><a href=https://manuss20.com/2019/06/01/azure-digital-twins/>Azure Digital Twins</a>
+<span class="float-end post-date">Jun 1, 2019</span></li><li><a href=https://manuss20.com/2020/03/14/dapr/>DAPR</a>
+<span class="float-end post-date">Mar 14, 2020</span></li><li><a href=https://manuss20.com/2020/02/11/azure-keyvault--docker/>Azure KeyVault + Docker</a>
+<span class="float-end post-date">Feb 11, 2020</span></li><li><a href=https://manuss20.com/2020/01/20/eventos-netcoreconf-barcelona-2020/>[Eventos] Netcoreconf Barcelona 2020</a>
+<span class="float-end post-date">Jan 20, 2020</span></li><li><a href=https://manuss20.com/2019/11/22/monitorizaci%C3%B3n-de-aplicaciones-en-azure/>Monitorización De Aplicaciones en Azure</a>
+<span class="float-end post-date">Nov 22, 2019</span></li></ul></div></section></div></div><aside class="col-lg-4 sidebar d-flex"><div class="container d-flex flex-column"><section class="card row text-center profile component"><div class=card-body><div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Manuel Sanchez" src=https://manuss20.com/images/profile.jpg loading=lazy width=400 height=400></div><div class="col-12 profile-meta"><div class=profile-name>Manuel Sanchez</div><div class=profile-bio>Technical Manager & Azure Evangelist at NTT DATA EMEAL| Microsoft Azure MVP | Founder and Organizer @netcoreconf & @CAT_zure</div><div class=profile-company><i class="fas fa-fw fa-building"></i>NTT DATA</div><div class=profile-location><i class="fas fa-fw fa-map-marker-alt"></i>Madrid, Spain</div><div class=profile-about><i class="fas fa-fw fa-user"></i><a href=https://manuss20.com/about/>About Me</a></div></div></div></section><div class="post-toc row mb-4 card component" id=postTOC><div class=card-header><h2 class=card-title>Contents</h2></div><div class=card-body><nav id=TableOfContents><ul><li><a href=#deploy-aks-cluster-on-azure-iot-edge-and-connect-it-to-azure-arc-using-terraform>Deploy AKS cluster on Azure IoT Edge and connect it to Azure Arc using Terraform</a></li><li><a href=#prerequisites>Prerequisites</a></li><li><a href=#automation-flow>Automation Flow</a></li><li><a href=#deployment>Deployment</a></li><li><a href=#delete-the-deployment>Delete the deployment</a></li></ul></nav></div></div><section class="recent-posts row card component"><div class=card-header><h2 class=card-title>Recent Posts</h2></div><div class=card-body><ul class=post-list><li><a href=https://manuss20.com/2021/11/15/deploy-azure-maps-con-terraform/>Deploy Azure Maps Con Terraform</a></li><li><a href=https://manuss20.com/2021/11/09/azure-ad-managed-identity/>Azure AD Managed Identity</a></li><li><a href=https://manuss20.com/2021/07/30/deploy-azure-digital-twins-con-terraform/>Deploy Azure Digital Twins Con Terraform</a></li><li><a href=https://manuss20.com/2021/06/06/deploy-azure-storage-account-con-terraform-json/>Deploy Azure Storage Account Con Terraform JSON</a></li><li><a href=https://manuss20.com/2021/05/20/azure-iot-edge-integration-with-aks-as-an-azure-arc-connected-cluster/>Azure IoT Edge Integration With AKS as an Azure Arc Connected Cluster</a></li></ul></div></section><section class="categories-taxonomies row card component"><div class=card-header><h2 class=card-title><a href=https://manuss20.com/categories>Categories</a></h2></div><div class=card-body><div class=py-2><a href=https://manuss20.com/categories/azure/ class="badge rounded post-taxonomy" title=Azure>Azure</a><a href=https://manuss20.com/categories/cloud/ class="badge rounded post-taxonomy" title=Cloud>
 Cloud</a><a href=https://manuss20.com/categories/community/ class="badge rounded post-taxonomy" title=Community>
 Community</a><a href=https://manuss20.com/categories/events/ class="badge rounded post-taxonomy" title=Events>
 Events</a><a href=https://manuss20.com/categories/networking/ class="badge rounded post-taxonomy" title=Networking>
@@ -459,17 +73,7 @@ IoT</a><a href=https://manuss20.com/categories/terraform/ class="badge rounded p
 Terraform</a><a href=https://manuss20.com/categories/docker/ class="badge rounded post-taxonomy" title=Docker>
 Docker</a><a href=https://manuss20.com/categories/saas/ class="badge rounded post-taxonomy" title=SaaS>
 SaaS</a><a href=https://manuss20.com/categories/templates/ class="badge rounded post-taxonomy" title=Templates>
-Templates</a></div>
-</div>
-</section><section class="tags-taxonomies row card component">
-<div class=card-header>
-<h2 class=card-title>
-<a href=https://manuss20.com/tags>Tags</a>
-</h2>
-</div>
-<div class=card-body>
-<div class=py-2><a href=https://manuss20.com/tags/azure/ class="badge rounded post-taxonomy" title=Azure>
-Azure</a><a href=https://manuss20.com/tags/cloud/ class="badge rounded post-taxonomy" title=Cloud>
+Templates</a></div></div></section><section class="tags-taxonomies row card component"><div class=card-header><h2 class=card-title><a href=https://manuss20.com/tags>Tags</a></h2></div><div class=card-body><div class=py-2><a href=https://manuss20.com/tags/azure/ class="badge rounded post-taxonomy" title=Azure>Azure</a><a href=https://manuss20.com/tags/cloud/ class="badge rounded post-taxonomy" title=Cloud>
 Cloud</a><a href=https://manuss20.com/tags/community/ class="badge rounded post-taxonomy" title=Community>
 Community</a><a href=https://manuss20.com/tags/event/ class="badge rounded post-taxonomy" title=Event>
 Event</a><a href=https://manuss20.com/tags/networking/ class="badge rounded post-taxonomy" title=Networking>
@@ -483,32 +87,11 @@ IoT</a><a href=https://manuss20.com/tags/terraform/ class="badge rounded post-ta
 Terraform</a><a href=https://manuss20.com/tags/docker/ class="badge rounded post-taxonomy" title=Docker>
 Docker</a><a href=https://manuss20.com/tags/saas/ class="badge rounded post-taxonomy" title=SaaS>
 SaaS</a><a href=https://manuss20.com/tags/templates/ class="badge rounded post-taxonomy" title=Templates>
-Templates</a></div>
-</div>
-</section>
-</div>
-</aside>
-</div>
-</main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"><a class="nav-link social-link" target=_blank href=https://github.com/manuss20 title=GitHub rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-github"></i>
-</a><a class="nav-link social-link" target=_blank href=https://linkedin.com/manuelsanchezrodriguez title=LinkedIn rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-linkedin-in"></i>
-</a><a class="nav-link social-link" target=_blank href=https://medium.com/@manuss20 title=Medium rel="noopener noreferrer">
-<i class="fab fa-fw fa-2x fa-medium-m"></i>
-</a><a class="nav-link social-link" target=_blank href=https://stackoverflow.com/users/manuss20 title="Stack Overflow" rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-stack-overflow"></i>
-</a><a class="nav-link social-link" target=_blank href=https://twitter.com/manuss20 title=Twitter rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-twitter"></i>
-</a><a class="nav-link social-link" target=_blank href=https://www.youtube.com/channel/manuss20 title=Youtube rel="noopener noreferrer">
-<i class="fa-fw fa-2x fab fa-youtube"></i>
-</a></nav>
-<div class="copyright mb-2">
-Copyright © 2022 Manuel Sánchez. All Rights Reserved.
-</div>
-<div class="powered-by mb-2">
-Powered by <a href=https://gohugo.io target=_blank rel="noopener noreferrer">Hugo</a> and the <a href=https://github.com/razonyang/hugo-theme-bootstrap target=_blank rel="noopener noreferrer">Bootstrap</a> theme.
-</div></footer>
-<script src=https://manuss20.com/js/main.2cdce25f280f570596c88888d6af930fe5e15ea030005291dad293defbb231d3.js integrity="sha256-LNziXygPVwWWyIiI1q+TD+XhXqAwAFKR2tKT3vuyMdM=" crossorigin=anonymous defer></script><script src=https://manuss20.com/js/icons.min.8ddcaafc364ff0296c2209c5495287f0de039b852da9b24847f94c198b7639b6.js integrity="sha256-jdyq/DZP8ClsIgnFSVKH8N4Dm4UtqbJIR/lMGYt2ObY=" crossorigin=anonymous defer></script>
-<script src=https://manuss20.com/js/viewer.min.652118a9fbf3403cdfde4026209f97ace22f9e334f0b45a33431a221b3db46a8.js integrity="sha256-ZSEYqfvzQDzf3kAmIJ+XrOIvnjNPC0WjNDGiIbPbRqg=" crossorigin=anonymous defer></script>
-</body>
-</html>
+Templates</a></div></div></section></div></aside></div></main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"><a class="nav-link social-link" target=_blank href=https://github.com/manuss20 title=GitHub rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-github"></i>
+</a><a class="nav-link social-link" target=_blank href=https://linkedin.com/manuelsanchezrodriguez title=LinkedIn rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-linkedin-in"></i>
+</a><a class="nav-link social-link" target=_blank href=https://mastodon.social/@https://hachyderm.io/@msanchez title=Mastodon rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-mastodon"></i>
+</a><a class="nav-link social-link" target=_blank href=https://medium.com/@manuss20 title=Medium rel="noopener noreferrer"><i class="fab fa-fw fa-2x fa-medium-m"></i>
+</a><a class="nav-link social-link" target=_blank href=https://stackoverflow.com/users/manuss20 title="Stack Overflow" rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-stack-overflow"></i>
+</a><a class="nav-link social-link" target=_blank href=https://twitter.com/manuss20 title=Twitter rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-twitter"></i>
+</a><a class="nav-link social-link" target=_blank href=https://www.youtube.com/channel/manuss20 title=Youtube rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-youtube"></i></a></nav><div class="copyright mb-2">Copyright © 2022 Manuel Sánchez. All Rights Reserved.</div><div class="powered-by mb-2">Powered by <a href=https://gohugo.io target=_blank rel="noopener noreferrer">Hugo</a> and the <a href=https://github.com/razonyang/hugo-theme-bootstrap target=_blank rel="noopener noreferrer">Bootstrap</a> theme.</div></footer><script src=https://manuss20.com/js/main.2cdce25f280f570596c88888d6af930fe5e15ea030005291dad293defbb231d3.js integrity="sha256-LNziXygPVwWWyIiI1q+TD+XhXqAwAFKR2tKT3vuyMdM=" crossorigin=anonymous defer></script><script src=https://manuss20.com/js/icons.min.51c35406c902d10a8c727cd65bc98c32b447950c5cde90210eb346a8fa006756.js integrity="sha256-UcNUBskC0QqMcnzWW8mMMrRHlQxc3pAhDrNGqPoAZ1Y=" crossorigin=anonymous defer></script>
+<script src=https://manuss20.com/js/viewer.min.a8208be3aa935702a4db52cc84efb041977103ab64919b01a6117fc574b0628f.js integrity="sha256-qCCL46qTVwKk21LMhO+wQZdxA6tkkZsBphF/xXSwYo8=" crossorigin=anonymous defer></script></body></html>
