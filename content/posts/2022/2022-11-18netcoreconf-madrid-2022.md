@@ -1,7 +1,7 @@
 +++
 author = "Manuel Sanchez"
 title = "[Eventos] Netcoreconf Madrid 2022"
-date = "2022-09-17"
+date = "2022-11-18"
 description="El pasado sábado 18 de noviembre tuvo lugar en Madrid la segunda edición de la Netcoreconf 2022."
 tags = [
     "Azure", "Community", "Netcoreconf", "Netcore", "Networking", "Event", "Workshops", "Azure WebApps"
