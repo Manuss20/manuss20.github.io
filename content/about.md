@@ -12,16 +12,16 @@ comment = false
   pre = '<i class="fas fa-fw fa-file-archive"></i>'
 +++
 
-My name is Manuel Sánchez, I´m **Technical Manager & Azure Evangelist at [NTT Data](https://nttdata.com/)** & **Microsoft Azure MVP**.
-Passionate about new technologies, highlighting Netcore , Microsoft Azure, Xamarin, IA, Bots and ASP.NET. Passionate about team management. I contribute to the developers community writing articles in my personal blog and giving speeches in numerous events. I am also one of the **[Netcoreconf](https://netcoreconf.com/)** & **[CATzure](https://www.meetup.com/es-ES/CATzure/)** leads.
+My name is Manuel Sánchez, I´m **Senior Technical Manager & Azure Evangelist at [NTT Data](https://nttdata.com/)** & **Microsoft Azure MVP**.
+Passionate about new technologies, highlighting Microsoft Azure, IA, Bots and .NET, Xamarin. Passionate about team management. I contribute to the developers community writing articles in my personal blog and giving speeches in numerous events. I am also one of the **[Netcoreconf](https://netcoreconf.com/)** & **[CATzure](https://www.meetup.com/es-ES/CATzure/)** leads.
 
 
 These are some of the events that I also participate in and organize with other colleagues from the community:
 
-* Global Azure Bootcamp
+* Global Azure 
+* Global AI Bootcamp
 * Global DevOps Bootcamp
 * Global Integration Bootcamp
-* Global AI Bootcamp
 * Azure Day
 * Azure Summer of Experts
 
